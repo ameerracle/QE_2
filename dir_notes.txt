@@ -1,0 +1,23 @@
+
+## SERVER Directories
+# Nibi Server
+pseudo_dir:  ("/scratch/anizami/QE_2/USPP/")
+QE_cpu: "/cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/MPI/gcc12/openmpi4/quantumespresso/7.5/bin/pw.x"
+## FOR GPU, module load nvhpc/25.1 StdEnv/2023 openmpi/5.0.3 cuda/12.6 module laod qe_gpu
+QE_GPU: "~/quantum-espresso-7.5-gpu/bin/pw.x"
+
+## LOCAL Directories
+env: conda activate qe
+QE_cpu: '/home/ameer_ubuntu/miniforge3/envs/qe/bin/pw.x'
+pseudo_dir: '/home/ameer_ubuntu/Git_projects/QE_2/USPP'
+
+pseudos = {
+    'Ti': 'ti_pbe_v1.4.uspp.F.UPF',
+    'V':  'v_pbe_v1.4.uspp.F.UPF',
+    'Sc': 'sc_pbe_v1.uspp.F.UPF',
+    'Nb': 'nb_pbe_v1.uspp.F.UPF',
+    'Zr': 'zr_pbe_v1.uspp.F.UPF',
+    'N':  'n_pbe_v1.2.uspp.F.UPF',
+    'Li': 'li_pbe_v1.4.uspp.F.UPF',
+    'S': 's_pbe_v1.4.uspp.F.UPF'
+}
