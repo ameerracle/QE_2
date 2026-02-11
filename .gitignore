@@ -1,2 +1,6 @@
 *.hdf5
 *.xml
+SSSP
+*.pwi
+*.pwo
+*.save
