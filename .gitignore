@@ -4,3 +4,11 @@ SSSP
 *.pwi
 *.pwo
 *.save
+pseudopots/*
+*.gpw
+*.hdf5
+*.xml
+*.log
+NC_SR/*
+*.txt
+*.err

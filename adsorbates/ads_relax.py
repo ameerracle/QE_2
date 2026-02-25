@@ -29,7 +29,7 @@ run_root.mkdir(exist_ok=True)
 pseudo_dir = Path("/scratch/anizami/QE_2/USPP/")
 vacuum = 10
 ecutwfc = 45.0
-ecutrho = 8 * ecutwfc
+ecutrho = 10 * ecutwfc
 kpts = (1, 1, 1)
 # Convergence thresholds (in Rydberg and Ry/Bohr)
 

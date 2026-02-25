@@ -151,7 +151,7 @@ for i in range(5):
             'ecutwfc': 45.0, 'ecutrho': 360.0,
             'occupations': 'smearing', 'smearing': 'cold', 'degauss': 0.005,
         },
-        'electrons': {'conv_thr': 1e-8, 'mixing_beta': 0.35},
+        'electrons': {'conv_thr': 1e-7, 'mixing_beta': 0.35},
         'ions': {'ion_dynamics': 'bfgs'},
         'cell': {'cell_dynamics': 'bfgs'}
     }

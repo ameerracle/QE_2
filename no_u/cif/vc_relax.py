@@ -3,7 +3,8 @@ from pathlib import Path
 from ase import io
 from ase.build import add_vacuum
 from ase.calculators.espresso import Espresso, EspressoProfile
-from ase.optimize import QuasiNewton
+
+from ase.units import GPa
 
 metals_compounds = ['TiN','VN', 'ScN','NbN','ZrN']
 metals = ['Ti','V','Sc','Nb','Zr']
@@ -22,6 +23,8 @@ pseudos = {
     "N": "n_pbe_v1.2.uspp.F.UPF",
 }
 
+
+
 for metal in metals_compounds:
     structure_path = Path(f"input_file/{metal}_relaxed.extxyz")
     run_dir = run_root / (metal +'_vcrelax')
@@ -33,6 +36,7 @@ for metal in metals_compounds:
     #profile = EspressoProfile(command="srun /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v3/MPI/gcc12/openmpi4/quantumespresso/7.5/bin/pw.x", pseudo_dir=str(pseudo_dir))
 
     #profile = EspressoProfile(command="srun /cvmfs/soft.computecanada.ca/easybuild/software/2023/x86-64-v4/MPI/gcc12/openmpi4/quantumespresso/7.5/bin/pw.x", pseudo_dir=str(pseudo_dir))
+
     calc = Espresso(
         profile=profile,
         pseudopotentials=pseudos,
@@ -44,7 +48,7 @@ for metal in metals_compounds:
             "dftd3_version":4,
             "occupations": "smearing",
             "smearing": "cold",
-            "degauss": 0.005, # in Ry,
+            "degauss": 0.01, # in Ry,
         },
 
         kpts=kpts,
@@ -53,6 +57,15 @@ for metal in metals_compounds:
     )
     atoms.calc = calc
     energy = atoms.get_potential_energy()
+    # reload the structure from the Espresso output file so we capture
+    # the relaxed cell/positions that vc-relax produced
+    out_file = run_dir / "espresso.pwo"
+    if out_file.exists():
+        try:
+            atoms = io.read(out_file, format="espresso-out")
+        except Exception:
+            # fall back if format plugin unavailable
+            pass
     # ensure output directory exists
     output_dir = run_dir / "output_file"
     output_dir.mkdir(exist_ok=True)
