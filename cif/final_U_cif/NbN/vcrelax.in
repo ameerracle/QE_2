@@ -1,0 +1,50 @@
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'nbn'
+  pseudo_dir = '/scratch/anizami/QE_2/USPP/'
+  outdir = './tmp/'
+/
+&SYSTEM
+  ibrav = 0, nat = 8, ntyp = 2
+  ecutwfc = 45, ecutrho = 450.0
+  occupations = 'smearing', smearing = 'mv', degauss = 0.08
+  nspin = 1
+  vdw_corr = 'dft-d3'
+  dftd3_version = 4
+/
+&ELECTRONS
+  conv_thr = 1.0d-6
+  mixing_beta = 0.3
+  mixing_mode = 'local-TF'
+  electron_maxstep = 150
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+/
+ATOMIC_SPECIES
+ Nb 1.0 nb_pbe_v1.uspp.F.UPF
+ N 1.0 n_pbe_v1.2.uspp.F.UPF
+
+CELL_PARAMETERS (angstrom)
+    4.3832107496    0.0000000000    0.0000000000
+    0.0000000000    4.3832107496    0.0000000000
+    0.0000000000    0.0000000000    4.3832107496
+
+ATOMIC_POSITIONS (angstrom)
+ Nb    0.000000000    0.000000000    0.000000000
+ Nb    2.191605370    2.191605370    0.000000000
+ Nb    2.191605370    0.000000000    2.191605370
+ Nb    0.000000000    2.191605370    2.191605370
+ N    0.000000000    0.000000000    2.191605370
+ N    0.000000000    2.191605370    0.000000000
+ N    2.191605370    0.000000000    0.000000000
+ N    2.191605370    2.191605370    2.191605370
+
+K_POINTS (automatic)
+ 5 5 5 0 0 0
+
+HUBBARD {ortho-atomic}
+ U Nb-4d 3.29

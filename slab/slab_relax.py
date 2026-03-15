@@ -1,19 +1,19 @@
+#!/usr/bin/env python3
+## RELAX THE SLABS WITH A FIXED U VALUE
 import os
 import subprocess
 import argparse
-import numpy as np
 from pathlib import Path
 from ase.io import read
 
 # --- Settings & Constants ---
 HUBBARD_MAP = {
-    "Ti": (5.70, 5.60),  # (Surface U, Bulk U)
-    "V":  (5.15, 5.09),
-    "Sc": (3.54, 3.56),
-    "Nb": (3.42, 3.51),
-    "Zr": (2.95, 3.03),
+    "Ti": 5.36,
+    "V":  5.87,
+    "Sc": 3.56,
+    "Nb": 3.29,
+    "Zr": 2.97,
 }
-
 PSEUDOS = {
     "Ti": "ti_pbe_v1.4.uspp.F.UPF",
     "V":  "v_pbe_v1.4.uspp.F.UPF",
@@ -23,68 +23,86 @@ PSEUDOS = {
     "N":  "n_pbe_v1.2.uspp.F.UPF",
 }
 
-SLAB_DIR = Path("./input_slab")
-RUN_ROOT = Path(".")
-PSEUDO_DIR = "/scratch/anizami/QE_2/USPP/"
+# --- Smart Pathing ---
+SCRIPT_DIR  = Path(__file__).resolve().parent
+SLAB_DIR    = SCRIPT_DIR / "uma144_slab"
+RUN_ROOT    = SCRIPT_DIR
+PSEUDO_DIR  = "/scratch/anizami/QE_2/USPP/"
+
 SLAB_NAMES = ["TiN", "VN", "ScN", "NbN", "ZrN"]
+
 
 def generate_and_run(name: str):
     metal = name.rstrip("N")
-    u_surf, u_bulk = HUBBARD_MAP[metal]
-    manifold = "4d" if metal in ["Nb", "Zr"] else "3d"
-    
-    xyz_file = SLAB_DIR / f"{name}_144_slab.xyz"
-    if not xyz_file.exists():
-        print(f"Skipping {name}: {xyz_file} not found.")
+    if metal not in HUBBARD_MAP:
+        print(f"Error: Metal {metal} not in Hubbard Map.")
         return
 
-    # Load atoms - this file has Tag 1 and Tag 2 in the 5th column
+    u_value  = HUBBARD_MAP[metal]
+    manifold = "4d" if metal in ["Nb", "Zr"] else "3d"
+
+    xyz_file = (SLAB_DIR / f"{name}_144_slab_uma.xyz").resolve() # Updated filename based on user breadcrumbs
+    if not xyz_file.exists():
+        # Fallback to general name if specific one doesn't exist
+        xyz_file = (SLAB_DIR / f"{name}_144_slab.xyz").resolve()
+        
+    if not xyz_file.exists():
+        print(f"--- FAILED TO FIND FILE: {xyz_file} ---")
+        return
+
     atoms = read(str(xyz_file))
-    cell = atoms.get_cell()
-    
-    # Create directory for this specific metal
-    run_dir = RUN_ROOT / f"{name}_relax_production"
+    cell  = atoms.get_cell()
+
+    run_type = "magnetic" if name == "VN" else "non_mag"
+    run_dir  = (RUN_ROOT / f"{name}_{run_type}_relax_144").resolve()
     run_dir.mkdir(exist_ok=True)
-    
-    # Define file names
+
     pwi_file = run_dir / f"{name}_slab.in"
     pwo_file = run_dir / f"{name}_slab.out"
-    
-    print(f"--- Preparing {name} Slab (144 atoms) ---")
-    print(f"Surface U: {u_surf} | Bulk U: {u_bulk} | Manifold: {manifold}")
+
+    print(f"--- Preparing {name} Slab ({len(atoms)} atoms) | U={u_value} | Smearing=0.02 ---")
 
     with open(pwi_file, "w") as f:
         # 1. CONTROL
-        f.write(f"&CONTROL\n")
-        f.write(f"  calculation = 'relax'\n")
+        f.write("&CONTROL\n")
+        f.write("  calculation = 'relax'\n")
         f.write(f"  prefix = '{name}_slab'\n")
         f.write(f"  pseudo_dir = '{PSEUDO_DIR}'\n")
-        f.write(f"  outdir = './tmp/'\n")
-        f.write(f"  disk_io = 'low'\n")
-        f.write(f"  verbosity = 'low'\n")
-        f.write(f"/\n")
+        f.write("  outdir = './tmp/'\n")
+        f.write("  disk_io = 'low'\n")
+        f.write("  verbosity = 'low'\n")
+        f.write(f"  forc_conv_thr = 0.000778\n")
+        f.write("  nstep = 150\n")
+        f.write("/\n")
 
         # 2. SYSTEM
-        f.write(f"&SYSTEM\n")
-        f.write(f"  ibrav = 0, nat = {len(atoms)}, ntyp = 3\n")
-        f.write(f"  ecutwfc = 45.0, ecutrho = 450.0\n")
-        f.write(f"  occupations = 'smearing', smearing = 'cold', degauss = 0.01\n")
-        # VN is special: must be magnetic
+        f.write("&SYSTEM\n")
+        f.write(f"  ibrav = 0, nat = {len(atoms)}, ntyp = 2\n")
+        f.write("  ecutwfc = 45.0, ecutrho = 450.0\n")
+        f.write("  occupations = 'smearing', smearing = 'cold', degauss = 0.015\n")
+        f.write("  vdw_corr = 'dft-d3'\n")
+        f.write("  dftd3_version = 4\n")
         if name == "VN":
-            f.write(f"  nspin = 2\n")
-            f.write(f"  starting_magnetization(1) = 1.0\n") # Surface V
-            f.write(f"  starting_magnetization(2) = 1.0\n") # Bulk V
-        f.write(f"/\n")
+            f.write("  nspin = 2\n")
+            f.write("  starting_magnetization(1) = 1.0\n")
+        else:
+            f.write("  nspin = 1\n")
+        f.write("/\n")
 
         # 3. ELECTRONS
-        f.write(f"&ELECTRONS\n")
-        f.write(f"  conv_thr = 1.0d-6\n")
-        f.write(f"  mixing_beta = 0.3\n")
-        f.write(f"  electron_maxstep = 125\n")
-        f.write(f"/\n")
+        f.write("&ELECTRONS\n")
+        f.write("  conv_thr = 5.0d-6\n")
+        if name in ["VN", "TiN"]:
+            f.write("  mixing_beta = 0.20\n")
+            f.write("  mixing_mode = 'local-TF'\n")
+            f.write("  electron_maxstep = 270\n")
+        else:
+            f.write("  mixing_beta = 0.3\n")
+            f.write("  electron_maxstep = 200\n")
+        f.write("/\n")
 
         # 4. IONS
-        f.write(f"&IONS\n  ion_dynamics = 'bfgs'\n/\n")
+        f.write("&IONS\n  ion_dynamics = 'bfgs'\n/\n")
 
         # 5. CELL_PARAMETERS
         f.write("\nCELL_PARAMETERS (angstrom)\n")
@@ -92,60 +110,45 @@ def generate_and_run(name: str):
             f.write(f"  {vec[0]:15.10f} {vec[1]:15.10f} {vec[2]:15.10f}\n")
 
         # 6. ATOMIC_SPECIES
-        f.write(f"\nATOMIC_SPECIES\n")
-        f.write(f"  {metal}1  1.0  {PSEUDOS[metal]}\n") # Surface type
-        f.write(f"  {metal}2  1.0  {PSEUDOS[metal]}\n") # Bulk type
-        f.write(f"  N   0.0  {PSEUDOS['N']}\n")
+        f.write("\nATOMIC_SPECIES\n")
+        f.write(f"  {metal}  1.0  {PSEUDOS[metal]}\n")
+        f.write(f"  N   1.0  {PSEUDOS['N']}\n")
 
-        # 7. ATOMIC_POSITIONS (Logic using Tags)
+        # 7. ATOMIC_POSITIONS
         f.write("\nATOMIC_POSITIONS (angstrom)\n")
         for atom in atoms:
-            # Species label based on Tag
-            if atom.symbol == metal:
-                label = f"{atom.symbol}{int(atom.tag)}" # Metal1 or Metal2
-            else:
-                label = "N"
-            
-            # Constraint: Tag 2 is fixed (0 0 0), Tag 1 is relaxed (1 1 1)
-            # Tag 2 was defined in your maker script as the interior layers
-            if int(atom.tag) == 2:
-                fix = "0 0 0"
-            else:
-                fix = "1 1 1"
-            
+            label = atom.symbol
+            # Fix atoms with z < 13A
+            fix   = "0 0 0" if atom.position[2] < 13.0 else "1 1 1"
             f.write(f"  {label:4} {atom.position[0]:14.9f} {atom.position[1]:14.9f} {atom.position[2]:14.9f} {fix}\n")
 
         # 8. K_POINTS
-        f.write(f"\nK_POINTS (automatic)\n  4 4 1 0 0 0\n")
+        f.write("\nK_POINTS (automatic)\n  4 4 1 0 0 0\n")
 
         # 9. HUBBARD
         f.write(f"\nHUBBARD {{ortho-atomic}}\n")
-        f.write(f"U {metal}1-{manifold} {u_surf}\n")
-        f.write(f"U {metal}2-{manifold} {u_bulk}\n")
+        f.write(f"U {metal}-{manifold} {u_value}\n")
 
-    print(f"Launching srun pw.x for {name}...")
-    
-    # Running the process
-    # Output file will be e.g., VN_slab.out
-    # Final execution line
-    cmd = f"srun pw.x -nk 6 < {pwi_file.name} > {pwo_file.name}"
-    
-    print(f"Launching: {cmd}")
+
+    # --- Execution ---
+    if "SLURM_JOB_ID" in os.environ:
+        exe_cmd = f"srun pw.x -nk 2 -in {pwi_file.name} > {pwo_file.name}"
+    else:
+        exe_cmd = f"mpirun -np 64 pw.x -nk 2 -in {pwi_file.name} > {pwo_file.name}"
+
     try:
-        # Run without 'stdout=out_f' because '>' handles it in the cmd string
-        subprocess.run(cmd, shell=True, cwd=str(run_dir), check=True)
+        subprocess.run(exe_cmd, shell=True, cwd=str(run_dir), check=True)
         print(f"Successfully finished {name}.")
     except Exception as e:
         print(f"Error during {name} run: {e}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--structure", choices=SLAB_NAMES, help="Which metal nitride to run?")
     args = parser.parse_args()
-
     if args.structure:
         generate_and_run(args.structure)
     else:
-        # If no argument, loop through all of them
         for target in SLAB_NAMES:
             generate_and_run(target)

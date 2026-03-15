@@ -21,13 +21,13 @@ PSEUDOS = {
 }
 
 SLAB_NAMES = ["TiN", "VN", "ScN", "NbN", "ZrN"]
-SLAB_DIR = Path("slab/input_slab")
+SLAB_DIR = Path("slab/uma144_slab")
 RUN_ROOT = Path(".")
 PSEUDO_DIR = Path("/scratch/anizami/QE_2/USPP/")
 SLAB_SUFFIX = "_144_slab.xyz"
 KPTS = (4, 4, 1)
 ECUT_WFC = 45.0
-ECUT_RHO = 8 * ECUT_WFC
+ECUT_RHO = 10 * ECUT_WFC
 
 
 def parse_arguments() -> argparse.Namespace:

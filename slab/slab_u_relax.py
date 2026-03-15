@@ -19,11 +19,11 @@ hp_cmd = "srun " + qe_bin + "hp.x"
 tolerance = 0.01
 
 start_u_values = {
-    "VN": 5.8675,
-    "TiN": 5.5479,
-    "NbN": 3.5140,
-    "ZrN": 2.9683,
-    "ScN": 3.5695
+    "VN": 5.87,
+    "TiN": 5.55,
+    "NbN": 3.52,
+    "ZrN": 2.97,
+    "ScN": 3.57
 }
 
 pseudo_map = {

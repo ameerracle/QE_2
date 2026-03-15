@@ -1,0 +1,11 @@
+slab,adsorbate,E_adsorption_eV,E_combi_eV,E_ads_eV,E_slab_eV,combi_file,src_combi,src_ads,src_slab
+NbN,Li2S8,-4.9352673300,-138449.9358289606,-3019.1160274698,-135425.8845341609,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/NbN_Li2S8_combi_relax/NbN_Li2S8_combi.out,ase,ase,ase
+NbN,S8,-9.9233104588,-138058.6767952986,-2622.8689506789,-135425.8845341609,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/NbN_S8_combi_relax/NbN_S8_combi_restart.out,ase,ase,ase
+ScN,Li2S8,-4.9206254286,-115444.0308639739,-3019.1160274698,-112419.9942110756,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/ScN_Li2S8_combi_relax/ScN_Li2S8_combi_restart.out,ase,ase,ase
+ScN,S8,-2.0922517402,-115044.9554134947,-2622.8689506789,-112419.9942110756,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/ScN_S8_combi_relax/ScN_S8_combi_restart.out,ase,ase,ase
+TiN,Li2S8,-7.8380358534,-139845.3559926007,-3019.1160274698,-136818.4019292775,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/TiN_Li2S8_combi_relax/TiN_Li2S8_combi_restart.out,ase,ase,ase
+TiN,S8,-6.6221963917,-139447.8930763482,-2622.8689506789,-136818.4019292775,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/TiN_S8_combi_relax/TiN_S8_combi_restart.out,ase,ase,ase
+VN,Li2S8,-3.1780032357,-165041.2689814061,-3019.1160274698,-162018.9749507006,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/VN_Li2S8_combi_relax/VN_Li2S8_combi_restart.out,ase,ase,ase
+VN,S8,-5.0899854082,-164646.9338867878,-2622.8689506789,-162018.9749507006,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/VN_S8_combi_relax/VN_S8_combi_restart.out,ase,ase,ase
+ZrN,Li2S8,-7.3753266794,-120149.0060821026,-3019.1160274698,-117122.5147279535,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/ZrN_Li2S8_combi_relax/ZrN_Li2S8_combi_restart.out,ase,ase,ase
+ZrN,S8,-9.7515132915,-119755.1351919239,-2622.8689506789,-117122.5147279535,/home/ameer_ubuntu/Git_projects/QE_2/no_u/combi_144/ZrN_S8_combi_relax/ZrN_S8_combi_restart.out,ase,ase,ase

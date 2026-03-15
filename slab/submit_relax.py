@@ -2,15 +2,17 @@ import subprocess
 from pathlib import Path
 
 # --- Settings ---
-METALS = ["TiN", "VN", "ScN", "NbN", "ZrN"]
-ACCOUNT = "rrg-peslherb-ac"
-NTASKS = 60
-MEM = "120G"
-TIME = "20:00:00"
+METALS = ["TiN", "VN",
+"ScN", "NbN", "ZrN"
+]
+ACCOUNT = "def-peslherb"
+NTASKS = 64
+MEM = "135G"
+TIME = "23:00:00"
 
 def create_and_submit():
     for metal in METALS:
-        job_name = f"relax_{metal}"
+        job_name = f"relax144_{metal}"
         sh_filename = f"submit_{metal}.sh"
         
         # Build the SLURM script string
@@ -27,7 +29,7 @@ set -euo pipefail
 
 # Load modules and environment
 module load quantumespresso/7.5 || true
-source ~/qe/bin/activate
+source ~/ase/bin/activate
 export OMP_NUM_THREADS=1
 
 # Run the python script for this specific metal

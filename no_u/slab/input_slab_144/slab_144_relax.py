@@ -63,6 +63,7 @@ def generate_and_run(name: str):
         f.write(f"  outdir = './tmp/'\n")
         f.write(f"  disk_io = 'low'\n")
         f.write(f"  verbosity = 'low'\n")
+        f.write(f"  forc_conv_thr = 0.000778\n")
         f.write(f"/\n")
 
         # System
@@ -82,7 +83,7 @@ def generate_and_run(name: str):
         f.write(f"/\n")
 
         # Ions
-        f.write(f"&IONS\n  ion_dynamics = 'bfgs'\n  forc_conv_thr = 0.000778\n/\n")
+        f.write(f"&IONS\n  ion_dynamics = 'bfgs'\n/\n")
 
         # Cell parameters
         f.write("\nCELL_PARAMETERS (angstrom)\n")
