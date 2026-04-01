@@ -79,28 +79,29 @@ def generate_and_run(slab: str, ads: str, dry_run: bool = False):
         f.write(f"  outdir = './tmp/'\n")
         f.write(f"  disk_io = 'low'\n")
         f.write(f"  verbosity = 'low'\n")
-        f.write(f"  forc_conv_thr = 0.000778\n")
-        f.write(f"  nstep = 150\n")
+        f.write(f"  forc_conv_thr = 0.00156\n")
+        f.write(f"  nstep = 160\n")
         f.write("/\n")
 
         # &SYSTEM
         f.write("&SYSTEM\n")
         f.write(f"  ibrav = 0, nat = {len(atoms)}, ntyp = {ntyp}\n")
         f.write(f"  ecutwfc = {ECUTWFC}, ecutrho = {ECUTRHO}\n")
-        f.write(f"  occupations = 'smearing', smearing = 'cold', degauss = 0.015\n")
+        f.write(f"  occupations = 'smearing', smearing = 'cold', degauss = 0.025\n")
         f.write(f"  vdw_corr = 'dft-d3', dftd3_version = 4\n")
         f.write("/\n")
 
         # &ELECTRONS
         f.write("&ELECTRONS\n")
-        f.write(f"  conv_thr = 5.0d-6\n")
-        f.write(f"  mixing_beta = 0.3\n")
+        f.write(f"  conv_thr = 7.5d-6\n")
+        f.write(f"  mixing_beta = 0.25\n")
         f.write(f"  electron_maxstep = 250\n")
         f.write("/\n")
 
         # &IONS
         f.write("&IONS\n")
         f.write(f"  ion_dynamics = 'bfgs'\n")
+        f.write(f"  upscale = 750\n")
         f.write("/\n")
 
         # CELL_PARAMETERS
@@ -138,7 +139,7 @@ def generate_and_run(slab: str, ads: str, dry_run: bool = False):
         f.write("\nK_POINTS (automatic)\n")
         f.write("  4 4 1 0 0 0\n")
 
-    cmd = f"srun pw.x -nk 2 < {pwi_file.name} > {pwo_file.name}"
+    cmd = f"srun pw.x -nk 4 < {pwi_file.name} > {pwo_file.name}"
 
     if dry_run:
         print(f"[dry-run] Input written to {pwi_file}")

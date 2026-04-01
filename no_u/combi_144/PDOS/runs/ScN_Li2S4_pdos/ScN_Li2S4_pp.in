@@ -1,0 +1,11 @@
+&INPUTPP
+  prefix = 'ScN_Li2S4_pdos'
+  outdir = './tmp/'
+  plot_num = 0
+  filplot = 'ScN_Li2S4_rho'
+/
+&PLOT
+  iflag = 3
+  output_format = 6
+  fileout = 'ScN_Li2S4_charge.cube'
+/

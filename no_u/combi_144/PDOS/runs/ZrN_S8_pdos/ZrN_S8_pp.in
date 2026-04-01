@@ -1,0 +1,11 @@
+&INPUTPP
+  prefix = 'ZrN_S8_pdos'
+  outdir = './tmp/'
+  plot_num = 0
+  filplot = 'ZrN_S8_rho'
+/
+&PLOT
+  iflag = 3
+  output_format = 6
+  fileout = 'ZrN_S8_charge.cube'
+/

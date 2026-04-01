@@ -1,0 +1,9 @@
+&PROJWFC
+  prefix = 'TiN_Li2S4_pdos'
+  outdir = './tmp/'
+  ngauss = -1
+  DeltaE = 0.0500
+  Emin = -12.00
+  Emax = 8.00
+  filpdos = 'combi_pdos'
+/
