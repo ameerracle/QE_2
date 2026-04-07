@@ -6,7 +6,7 @@ import os
 ACCOUNT = "rrg-peslherb-ac"
 TASKS_PER_NODE = 64
 MEM = "135G" 
-TIME = "47:50:00"
+TIME = "23:50:00"
 
 # --- Target Systems ---
 METALS = ["VN", "TiN", "ScN", "NbN", "ZrN"]

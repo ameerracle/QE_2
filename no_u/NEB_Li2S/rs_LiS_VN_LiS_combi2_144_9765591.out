@@ -1,0 +1,4 @@
+
+>>> RESTART DETECTED for VN_LiS_combi2_144. Mode='restart', writing to VN_LiS_combi2_144_restart.out
+Launching: srun pw.x -nk 4 < VN_LiS_combi2_144_restart.in > VN_LiS_combi2_144_restart.out
+OK: VN_LiS_combi2_144 finished successfully.
