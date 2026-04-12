@@ -80,6 +80,22 @@ def _parse_cell_block(lines: Sequence[str], start: int) -> Tuple[Optional[np.nda
     return np.array(mat, dtype=float), cell_unit, i
 
 
+def _parse_crystal_axes_block(lines: Sequence[str], start: int) -> Tuple[Optional[np.ndarray], str, int]:
+    mat = []
+    i = start + 1
+    for _ in range(3):
+        if i >= len(lines):
+            return None, "alat", i
+        groups = re.findall(r"\(([^()]*)\)", lines[i])
+        vals = _extract_floats(groups[-1]) if groups else []
+        if len(vals) < 3:
+            return None, "alat", i
+        mat.append(vals[:3])
+        i += 1
+
+    return np.array(mat, dtype=float), "alat", i
+
+
 def _parse_positions_block(lines: Sequence[str], start: int) -> Tuple[List[str], np.ndarray, str, int]:
     line = lines[start].strip()
     match = re.search(r"\(([^)]+)\)", line)
@@ -138,6 +154,14 @@ def _parse_qe_out_all(filename: Union[str, Path]) -> List[Atoms]:
 
         if line.startswith("CELL_PARAMETERS"):
             cell_raw, cell_unit, new_i = _parse_cell_block(lines, i)
+            if cell_raw is not None:
+                last_cell_raw = cell_raw
+                last_cell_unit = cell_unit
+            i = new_i
+            continue
+
+        if line.startswith("crystal axes:"):
+            cell_raw, cell_unit, new_i = _parse_crystal_axes_block(lines, i)
             if cell_raw is not None:
                 last_cell_raw = cell_raw
                 last_cell_unit = cell_unit
