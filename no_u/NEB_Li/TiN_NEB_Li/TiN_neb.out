@@ -1,0 +1,455 @@
+
+     Program NEB v.7.5 starts on  6Apr2026 at 15:58:10 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on      64 processor cores
+     Number of MPI processes:                64
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     706524 MiB available memory on the printing compute node when the environment starts
+
+
+     Parsing file: TiN_neb.in
+     Reading input from pw_1.in
+     Reading input from pw_2.in
+
+     reading file 'TiN_li.path'
+
+
+     string_method                 =    neb
+     restart_mode                  =    restart
+     opt_scheme                    =    broyden
+     num_of_images                 =    5
+     nstep_path                    =    120
+     CI_scheme                     =    auto
+     first_last_opt                =    F
+     use_freezing                  =    F
+     ds                            =    1.0000 a.u.
+     k_max                         =    0.1000 a.u.
+     k_min                         =    0.1000 a.u.
+     suggested k_max               =    0.6169 a.u.
+     suggested k_min               =    0.6169 a.u.
+     path_thr                      =    0.0500 eV / A
+
+     ------------------------------ iteration  12 ------------------------------
+
+     tcpu =      0.4    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =   3224.0    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =   6031.8    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.360903 eV
+     activation energy (<-) =   0.360897 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2293839            0.210821            F
+         3    -137015.0245918            0.831872            F
+         4    -137015.2293307            0.210561            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  6.017 bohr
+     inter-image distance =  1.504 bohr
+
+     ------------------------------ iteration  13 ------------------------------
+
+     tcpu =   8951.9    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  11510.8    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  15160.7    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.230578 eV
+     activation energy (<-) =   0.230572 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2463795            0.041768            F
+         3    -137015.1549168            0.120913            F
+         4    -137015.2463756            0.041936            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.747 bohr
+     inter-image distance =  1.437 bohr
+
+     ------------------------------ iteration  14 ------------------------------
+
+     tcpu =  18333.5    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  19903.0    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  21797.5    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.229788 eV
+     activation energy (<-) =   0.229783 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2463754            0.038852            F
+         3    -137015.1557060            0.117279            F
+         4    -137015.2463765            0.037105            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.748 bohr
+     inter-image distance =  1.437 bohr
+
+     ------------------------------ iteration  15 ------------------------------
+
+     tcpu =  23536.9    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  26024.3    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  28021.0    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.227482 eV
+     activation energy (<-) =   0.227476 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2460797            0.026637            F
+         3    -137015.1580126            0.100705            F
+         4    -137015.2460792            0.026614            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.754 bohr
+     inter-image distance =  1.438 bohr
+
+     ------------------------------ iteration  16 ------------------------------
+
+     tcpu =  30317.9    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  32024.5    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  33551.1    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.227155 eV
+     activation energy (<-) =   0.227149 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2459885            0.026052            F
+         3    -137015.1583395            0.099453            F
+         4    -137015.2459927            0.025851            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.754 bohr
+     inter-image distance =  1.439 bohr
+
+     ------------------------------ iteration  17 ------------------------------
+
+     tcpu =  35321.4    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  37401.5    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  39741.1    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.226792 eV
+     activation energy (<-) =   0.226787 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2458844            0.025338            F
+         3    -137015.1587022            0.097276            F
+         4    -137015.2458824            0.025861            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.756 bohr
+     inter-image distance =  1.439 bohr
+
+     ------------------------------ iteration  18 ------------------------------
+
+     tcpu =  41514.6    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  43396.0    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  45124.3    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.226249 eV
+     activation energy (<-) =   0.226243 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2456993            0.024810            F
+         3    -137015.1592456            0.093196            F
+         4    -137015.2456983            0.025135            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.758 bohr
+     inter-image distance =  1.439 bohr
+
+     ------------------------------ iteration  19 ------------------------------
+
+     tcpu =  46721.8    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  48851.8    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  51072.0    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.227561 eV
+     activation energy (<-) =   0.227555 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2425764            0.043951            F
+         3    -137015.1579339            0.197498            F
+         4    -137015.2426558            0.040785            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.794 bohr
+     inter-image distance =  1.448 bohr
+
+     ------------------------------ iteration  20 ------------------------------
+
+     tcpu =  53015.0    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  55072.1    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  57331.0    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.224676 eV
+     activation energy (<-) =   0.224670 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2449972            0.019619            F
+         3    -137015.1608186            0.067918            F
+         4    -137015.2450024            0.020249            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.767 bohr
+     inter-image distance =  1.442 bohr
+
+     ------------------------------ iteration  21 ------------------------------
+
+     tcpu =  59586.4    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  60667.3    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  61931.6    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.224493 eV
+     activation energy (<-) =   0.224487 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2449359            0.020521            F
+         3    -137015.1610018            0.059687            F
+         4    -137015.2449406            0.020497            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.769 bohr
+     inter-image distance =  1.442 bohr
+
+     ------------------------------ iteration  22 ------------------------------
+
+     tcpu =  63015.6    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  64103.2    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  65292.9    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.224329 eV
+     activation energy (<-) =   0.224324 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2449571            0.018872            F
+         3    -137015.1611651            0.052379            F
+         4    -137015.2449607            0.019066            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.769 bohr
+     inter-image distance =  1.442 bohr
+
+     ------------------------------ iteration  23 ------------------------------
+
+     tcpu =  66360.1    self-consistency for image   2
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  67456.8    self-consistency for image   3
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+     tcpu =  68826.1    self-consistency for image   4
+     Message from routine setup:
+     using ibrav=0 with symmetry is DISCOURAGED, use correct ibrav instead
+
+     activation energy (->) =   0.224207 eV
+     activation energy (<-) =   0.224202 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137015.3854945            0.026751            T
+         2    -137015.2450188            0.017594            F
+         3    -137015.1612871            0.045651            F
+         4    -137015.2450220            0.017408            F
+         5    -137015.3854890            0.026650            T
+
+     climbing image =  3
+
+     path length          =  5.770 bohr
+     inter-image distance =  1.442 bohr
+
+     ---------------------------------------------------------------------------
+
+
+     neb: convergence achieved in  23 iterations
+
+     NEB          :  58579.84s CPU  69889.38s WALL
+
+
+   This run was terminated on:  11:23: 0   7Apr2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL

@@ -15,6 +15,7 @@ from typing import Iterator, List, Optional, Sequence, Tuple, Union
 
 import numpy as np
 from ase import Atoms
+from ase.calculators.singlepoint import SinglePointCalculator
 from ase.io import write
 from ase.units import Bohr
 from ase.utils import string2index
@@ -26,6 +27,17 @@ IndexLike = Union[int, slice, str, None]
 FLOAT_RE = re.compile(r"[-+]?\d*\.?\d+(?:[Ee][-+]?\d+)?")
 ALAT_RE = re.compile(r"lattice parameter \(alat\)\s*=\s*([-+0-9.eE]+)")
 ENERGY_RE = re.compile(r"!\s+total energy\s*=\s*([-+0-9.eE]+)\s+Ry")
+BFGS_STEP_RE = re.compile(r"number of bfgs steps\s*=\s*(\d+)", re.IGNORECASE)
+
+
+class QESnapshotList(list):
+    """List of QE snapshots with convenience access to the final image."""
+
+    def get_potential_energy(self) -> float:
+        return self[-1].get_potential_energy()
+
+    def get_forces(self) -> np.ndarray:
+        return self[-1].get_forces()
 
 
 def _extract_floats(line: str) -> List[float]:
@@ -59,6 +71,88 @@ def _to_angstrom(values: np.ndarray, unit: str, alat_ang: Optional[float]) -> np
             raise ValueError("Encountered alat coordinates/cell but alat was not found in output.")
         return values * alat_ang
     raise ValueError(f"Unsupported Cartesian unit: {unit}")
+
+
+def _to_ev_per_angstrom(values: np.ndarray, unit: str) -> np.ndarray:
+    unit = unit.strip().lower()
+    if unit in {"ev/angstrom", "ev/ang", "ev/a"}:
+        return values
+    if unit in {"ry/au", "ry/bohr", "ry/a.u.", "ry/atomic unit"}:
+        return values * 13.605693009 / Bohr
+    if unit in {"ha/bohr", "hartree/bohr", "hartree/au"}:
+        return values * 27.211386018 / Bohr
+    raise ValueError(f"Unsupported force unit: {unit}")
+
+
+def _attach_single_point_results(
+    atoms: Atoms,
+    *,
+    energy_ry: Optional[float] = None,
+    forces: Optional[np.ndarray] = None,
+) -> None:
+    results = {}
+
+    if energy_ry is not None:
+        energy_ev = energy_ry * 13.605693009
+        atoms.info["energy_ry"] = energy_ry
+        atoms.info["energy_ev"] = energy_ev
+        results["energy"] = energy_ev
+        results["free_energy"] = energy_ev
+
+    if forces is not None:
+        results["forces"] = forces
+
+    if results:
+        atoms.calc = SinglePointCalculator(atoms, **results)
+
+
+def _parse_forces_block(lines: Sequence[str], start: int) -> Tuple[Optional[np.ndarray], str, int]:
+    line = lines[start].strip()
+    match = re.search(r"\(([^)]+)\)", line)
+    force_unit = match.group(1).split(",")[-1].strip() if match else "Ry/au"
+
+    forces: List[List[float]] = []
+    i = start + 1
+    started = False
+    while i < len(lines):
+        raw = lines[i].strip()
+        if not raw:
+            if started:
+                break
+            i += 1
+            continue
+
+        lowered = raw.lower()
+        if lowered.startswith((
+            "number of bfgs steps",
+            "cell_parameters",
+            "atomic_positions",
+            "end final coordinates",
+            "writing config-only",
+            "k_points",
+            "total force",
+            "scf correction",
+        )):
+            break
+
+        if lowered.startswith("atom"):
+            vals = _extract_floats(raw)
+            if len(vals) < 3:
+                break
+            forces.append(vals[-3:])
+            started = True
+            i += 1
+            continue
+
+        if started:
+            break
+
+        i += 1
+
+    if not forces:
+        return None, force_unit, i
+
+    return np.array(forces, dtype=float), force_unit, i
 
 
 def _parse_cell_block(lines: Sequence[str], start: int) -> Tuple[Optional[np.ndarray], str, int]:
@@ -138,6 +232,9 @@ def _parse_qe_out_all(filename: Union[str, Path]) -> List[Atoms]:
     last_cell_unit: str = "angstrom"
     alat_ang: Optional[float] = None
     last_energy_ry: Optional[float] = None
+    last_forces_raw: Optional[np.ndarray] = None
+    last_forces_unit: str = "Ry/au"
+    last_bfgs_step: Optional[int] = None
 
     i = 0
     while i < len(lines):
@@ -151,6 +248,18 @@ def _parse_qe_out_all(filename: Union[str, Path]) -> List[Atoms]:
         m_energy = ENERGY_RE.search(line)
         if m_energy:
             last_energy_ry = float(m_energy.group(1))
+
+        m_bfgs = BFGS_STEP_RE.search(line)
+        if m_bfgs:
+            last_bfgs_step = int(m_bfgs.group(1))
+
+        if line.startswith("Forces acting on atoms"):
+            forces_raw, force_unit, new_i = _parse_forces_block(lines, i)
+            if forces_raw is not None:
+                last_forces_raw = forces_raw
+                last_forces_unit = force_unit
+            i = new_i
+            continue
 
         if line.startswith("CELL_PARAMETERS"):
             cell_raw, cell_unit, new_i = _parse_cell_block(lines, i)
@@ -193,9 +302,18 @@ def _parse_qe_out_all(filename: Union[str, Path]) -> List[Atoms]:
                     continue
                 atoms = Atoms(symbols=symbols, positions=pos_ang, cell=cell_ang, pbc=True)
 
-            if last_energy_ry is not None:
-                atoms.info["energy_ry"] = last_energy_ry
-                atoms.info["energy_ev"] = last_energy_ry * 13.605693009
+            forces_ang = None
+            if last_forces_raw is not None and len(last_forces_raw) == len(symbols):
+                try:
+                    forces_ang = _to_ev_per_angstrom(last_forces_raw, last_forces_unit)
+                except ValueError:
+                    forces_ang = None
+
+            if last_bfgs_step is not None:
+                atoms.info["bfgs_step"] = last_bfgs_step
+                atoms.info["force_counter"] = last_bfgs_step
+
+            _attach_single_point_results(atoms, energy_ry=last_energy_ry, forces=forces_ang)
 
             snapshots.append(atoms)
             continue
@@ -204,8 +322,15 @@ def _parse_qe_out_all(filename: Union[str, Path]) -> List[Atoms]:
 
     # Some QE runs print an updated final energy after the last geometry block.
     if snapshots and last_energy_ry is not None:
-        snapshots[-1].info["energy_ry"] = last_energy_ry
-        snapshots[-1].info["energy_ev"] = last_energy_ry * 13.605693009
+        final_atoms = snapshots[-1]
+        final_forces = None
+        if final_atoms.calc is not None:
+            final_forces = final_atoms.calc.results.get("forces")
+        _attach_single_point_results(final_atoms, energy_ry=last_energy_ry, forces=final_forces)
+
+        if last_bfgs_step is not None:
+            final_atoms.info["bfgs_step"] = last_bfgs_step
+            final_atoms.info["force_counter"] = last_bfgs_step
 
     return snapshots
 
@@ -241,7 +366,7 @@ def read_qe_hubbard_out(filename: Union[str, Path], index: IndexLike = -1) -> Un
         index = -1
 
     if isinstance(index, slice):
-        return snapshots[index]
+        return QESnapshotList(snapshots[index])
 
     return snapshots[index]
 

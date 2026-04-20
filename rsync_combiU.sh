@@ -19,13 +19,26 @@ RSYNC_OPTS=(-avzP)
 # Create local directory
 mkdir -p "${LOCAL_DST}"
 
-# Transfer only .out files from *_combi_relax subdirectories (under no_u/combi_144)
-echo "Pulling .out files from *_combi_relax directories on ${REMOTE_HOST}:${REMOTE_SRC} → ${LOCAL_DST}"
+# Transfer only .out files from selected *_combi_relax_u subdirectories
+echo "Pulling .out files from selected *_combi_relax_u directories on ${REMOTE_HOST}:${REMOTE_SRC} → ${LOCAL_DST}"
 [[ "${DRY_RUN}" == "1" ]] && echo "[DRY RUN]"
 
+TARGET_DIRS=(
+    "VN_S8_combi_relax_u"
+    "VN_Li2S8_combi_relax_u"
+    "TiN_Li2S8_combi_relax_u"
+    "VN_Li2S6_combi_relax_u"
+    "TiN_Li2S6_combi_relax_u"
+)
+
+FILTERS=()
+for d in "${TARGET_DIRS[@]}"; do
+    FILTERS+=(--include="${d}/")
+    FILTERS+=(--include="${d}/*.out")
+done
+
 rsync "${RSYNC_OPTS[@]}" \
-    --include='*_combi_relax_u/' \
-    --include='*_combi_relax_u/*.out' \
+    "${FILTERS[@]}" \
     --exclude='*/' \
     --exclude='*' \
     "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_SRC}" \

@@ -24,10 +24,11 @@ echo "Pulling .out files from Li subfolders on ${REMOTE_HOST}:${REMOTE_SRC} → 
 [[ "${DRY_RUN}" == "1" ]] && echo "[DRY RUN]"
 
 rsync "${RSYNC_OPTS[@]}" \
-    --include='*_Li_combi1_144_relax/' \
-    --include='*_Li_combi2_144_relax/' \
-    --include='*_Li_combi1_144_relax/*.out' \
-    --include='*_Li_combi2_144_relax/*.out' \
+    --include='*_NEB_Li/' \
+    --include='*_NEB_Li/*.out' \
+    --include='*_NEB_Li/*.path' \
+    --include='*_NEB_Li/*.axsf' \
+    --include='*_NEB_Li/*.xyz' \
     --exclude='*/' \
     --exclude='*' \
     "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_SRC}" \

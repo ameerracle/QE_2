@@ -1,0 +1,295 @@
+
+     Program NEB v.7.5 starts on 17Apr2026 at  2:33:54 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on      64 processor cores
+     Number of MPI processes:                64
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     620484 MiB available memory on the printing compute node when the environment starts
+
+
+     Parsing file: neb.in
+     Reading input from pw_1.in
+     Reading input from pw_2.in
+
+     reading file 'TiN_neb.path'
+
+
+     string_method                 =    neb
+     restart_mode                  =    restart
+     opt_scheme                    =    broyden
+     num_of_images                 =    5
+     nstep_path                    =    120
+     CI_scheme                     =    auto
+     first_last_opt                =    F
+     use_freezing                  =    F
+     ds                            =    1.0000 a.u.
+     k_max                         =    0.1000 a.u.
+     k_min                         =    0.1000 a.u.
+     suggested k_max               =    0.6169 a.u.
+     suggested k_min               =    0.6169 a.u.
+     path_thr                      =    0.0500 eV / A
+
+     ------------------------------ iteration  39 ------------------------------
+
+     tcpu =      0.6    self-consistency for image   2
+     tcpu =   5277.8    self-consistency for image   3
+     tcpu =  10292.9    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2794476            0.046914            F
+         3    -137542.7164848            0.070072            F
+         4    -137542.3685050            0.052632            F
+         5    -137542.3564023            0.113139            T
+
+     climbing image =  5
+
+     path length          =  6.285 bohr
+     inter-image distance =  1.571 bohr
+
+     ------------------------------ iteration  40 ------------------------------
+
+     tcpu =  15369.0    self-consistency for image   2
+     tcpu =  17834.8    self-consistency for image   3
+     tcpu =  21220.0    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2802888            0.050906            F
+         3    -137542.7260113            0.041273            F
+         4    -137542.3696683            0.067059            F
+         5    -137542.3564023            0.114563            T
+
+     climbing image =  5
+
+     path length          =  6.309 bohr
+     inter-image distance =  1.577 bohr
+
+     ------------------------------ iteration  41 ------------------------------
+
+     tcpu =  24827.0    self-consistency for image   2
+     tcpu =  27457.9    self-consistency for image   3
+     tcpu =  30966.0    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2819582            0.048938            F
+         3    -137542.7394222            0.033572            F
+         4    -137542.3715320            0.084988            F
+         5    -137542.3564023            0.117062            T
+
+     climbing image =  5
+
+     path length          =  6.347 bohr
+     inter-image distance =  1.587 bohr
+
+     ------------------------------ iteration  42 ------------------------------
+
+     tcpu =  34335.1    self-consistency for image   2
+     tcpu =  37003.8    self-consistency for image   3
+     tcpu =  39947.4    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2828947            0.041659            F
+         3    -137542.7435214            0.044532            F
+         4    -137542.3723701            0.087523            F
+         5    -137542.3564023            0.118398            T
+
+     climbing image =  5
+
+     path length          =  6.360 bohr
+     inter-image distance =  1.590 bohr
+
+     ------------------------------ iteration  43 ------------------------------
+
+     tcpu =  42985.5    self-consistency for image   2
+     tcpu =  47167.1    self-consistency for image   3
+     tcpu =  50203.4    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2837084            0.033100            F
+         3    -137542.7455046            0.041455            F
+         4    -137542.3730661            0.082664            F
+         5    -137542.3564023            0.119634            T
+
+     climbing image =  5
+
+     path length          =  6.369 bohr
+     inter-image distance =  1.592 bohr
+
+     ------------------------------ iteration  44 ------------------------------
+
+     tcpu =  53470.6    self-consistency for image   2
+     tcpu =  56119.8    self-consistency for image   3
+     tcpu =  59641.3    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2844257            0.024108            F
+         3    -137542.7463889            0.032053            F
+         4    -137542.3736816            0.074899            F
+         5    -137542.3564023            0.120834            T
+
+     climbing image =  5
+
+     path length          =  6.374 bohr
+     inter-image distance =  1.594 bohr
+
+     ------------------------------ iteration  45 ------------------------------
+
+     tcpu =  63105.3    self-consistency for image   2
+     tcpu =  66070.0    self-consistency for image   3
+     tcpu =  69149.9    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2852027            0.015582            F
+         3    -137542.7469359            0.022788            F
+         4    -137542.3744307            0.064071            F
+         5    -137542.3564023            0.122299            T
+
+     climbing image =  5
+
+     path length          =  6.380 bohr
+     inter-image distance =  1.595 bohr
+
+     ------------------------------ iteration  46 ------------------------------
+
+     tcpu =  72875.7    self-consistency for image   2
+     tcpu =  76318.8    self-consistency for image   3
+     tcpu =  80021.2    self-consistency for image   4
+
+     activation energy (->) =   1.177080 eV
+     activation energy (<-) =  -0.000000 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1    -137543.5334826            0.036945            T
+         2    -137543.2872301            0.028427            F
+         3    -137542.7486919            0.028086            F
+         4    -137542.3766694            0.040537            F
+         5    -137542.3564023            0.126588            T
+
+     climbing image =  5
+
+     path length          =  6.396 bohr
+     inter-image distance =  1.599 bohr
+
+     ---------------------------------------------------------------------------
+
+
+     neb: convergence achieved in  46 iterations
+
+     NEB          :  56002.72s CPU  83247.24s WALL
+
+
+   This run was terminated on:   1:41:21  18Apr2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
