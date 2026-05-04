@@ -1,0 +1,17 @@
+crystal TiN_Li2S8_charge.cube
+load TiN_Li2S8_charge.cube id rho_tot
+reference rho_tot
+
+load as promolecular SIZEOF rho_tot id rho_atoms
+load as "$rho_tot-$rho_atoms" id diff
+
+cube GRID file deformation_TiN_Li2S8.cube field diff
+cube GRID file laplacian_TiN_Li2S8.cube field rho_tot LAP
+
+PLANE 0.0 0.495 0.52 1.0 0.495 0.52 0.0 0.495 0.75 200 200 field rho_tot LAP file laplacian_plane_TiN_Li2S8.dat CONTOUR LIN 40 -5.0 5.0 COLORMAP
+
+reference rho_tot
+auto
+cpreport LONG
+
+END

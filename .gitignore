@@ -12,3 +12,6 @@ pseudopots/*
 NC_SR/*
 *.txt
 *.err
+critic2/*
+VASP/Ameer_res/*
+*.zip

@@ -26,15 +26,14 @@ echo "Pulling .out files from selected *_combi_relax_u directories on ${REMOTE_H
 TARGET_DIRS=(
     "VN_S8_combi_relax_u"
     "VN_Li2S8_combi_relax_u"
-    "TiN_Li2S8_combi_relax_u"
     "VN_Li2S6_combi_relax_u"
-    "TiN_Li2S6_combi_relax_u"
+
 )
 
 FILTERS=()
 for d in "${TARGET_DIRS[@]}"; do
     FILTERS+=(--include="${d}/")
-    FILTERS+=(--include="${d}/*.out")
+    FILTERS+=(--include="${d}/*u.out")
 done
 
 rsync "${RSYNC_OPTS[@]}" \

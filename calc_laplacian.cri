@@ -1,0 +1,12 @@
+# 1. Load the total density
+crystal TiN_Li2S8_charge.cube
+load TiN_Li2S8_charge.cube id rho_tot
+
+# 2. Have critic2 calculate the sum of the standalone atoms (promolecular density)
+load as promolecular SIZEOF rho_tot id rho_atoms
+
+# 3. Subtract them to get the Deformation Density!
+load as "$rho_tot - $rho_atoms" id diff
+
+# 4. Write it out
+cube grid file deformation_TiN_Li2S8.cube field diff
