@@ -16,3 +16,12 @@ critic2/*
 VASP/Ameer_res/*
 *.zip
 .cube
+*.png
+*.pdf
+*_wfc*
+wfc*.hdf5
+*.wfc
+*.pdos_tot
+*nscf.out
+*.md
+*.cube
