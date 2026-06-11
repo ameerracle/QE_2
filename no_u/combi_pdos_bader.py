@@ -27,8 +27,8 @@ PSEUDOS = {
 SLABS = ["TiN", "VN", "ScN", "NbN", "ZrN"]
 FULL_PDOS_ADS = {"Li2S4", "Li2S8", "S8"}
 FIXED_NK = 2
-SCF_CONV_THR = 1.0e-7
-NSCF_CONV_THR = 1.0e-7
+SCF_CONV_THR = 1.0e-6
+NSCF_CONV_THR = 1.0e-6
 
 def parse_kgrid(text: str) -> list[int]:
     return [int(x) for x in text.split()]
@@ -100,7 +100,9 @@ def write_nscf_input(file_path, atoms, tag, pseudo_dir, ecutwfc, ecutrho, k_nscf
         f.write("&SYSTEM\n")
         f.write(f"  ibrav = 0, nat = {nat}, ntyp = {ntyp}\n")
         f.write(f"  ecutwfc = {ecutwfc:.1f}, ecutrho = {ecutrho:.1f}\n")
-        f.write("  occupations = 'tetrahedra_opt'\n/\n")
+        f.write("  occupations = 'smearing'\n")
+        f.write("  smearing = 'cold', degauss = 0.015\n") 
+        f.write("/\n")
         f.write("&ELECTRONS\n")
         f.write(f"  conv_thr = {format_conv_thr(NSCF_CONV_THR)}\n")
         f.write("  diago_david_ndim = 6\n")

@@ -25,3 +25,4 @@ wfc*.hdf5
 *nscf.out
 *.md
 *.cube
+VASP/*

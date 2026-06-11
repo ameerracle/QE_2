@@ -11,6 +11,8 @@ import os
 import subprocess
 from pathlib import Path
 
+import shutil
+
 import numpy as np
 from ase import Atoms
 from ase.io import read
@@ -155,12 +157,12 @@ def write_projwfc_input(file_path: Path, slab_name: str, filpdos: str, delta_e: 
         f.write(f"  filpdos = '{filpdos}'\n")
         f.write("/\n")
 
-def write_pp_input(file_path: Path, slab_name: str, filplot: str, fileout: str) -> None:
+def write_pp_input(file_path: Path, slab_name: str, filplot: str, fileout: str, plot_num: int = 21) -> None:
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("&INPUTPP\n")
         f.write(f"  prefix = '{slab_name}_slab'\n")
         f.write("  outdir = './tmp/'\n")
-        f.write("  plot_num = 21\n")
+        f.write(f"  plot_num = {plot_num}\n")
         f.write(f"  filplot = '{filplot}'\n")
         f.write("/\n")
         f.write("&PLOT\n")
@@ -173,7 +175,8 @@ def run_chain(run_dir: Path, slab_name: str, np: int, nk: int) -> None:
     pref = f"{slab_name}_slab"
     cmds = [
         ("SCF", f"pw.x -nk {nk} < {pref}_scf.in > {pref}_scf.out"),
-        ("PP", f"pp.x < {pref}_pp.in > {pref}_pp.out"),
+        ("PP_plot0", f"pp.x < {pref}_pp_plot0.in > {pref}_pp_plot0.out"),
+        ("PP_plot21", f"pp.x < {pref}_pp.in > {pref}_pp.out"),
         ("NSCF", f"pw.x -nk {nk} < {pref}_nscf.in > {pref}_nscf.out"),
         ("PROJWFC", f"projwfc.x < {pref}_projwfc.in > {pref}_projwfc.out"),
     ]
@@ -207,13 +210,21 @@ def prepare_single_slab(
 
     run_dir = run_root / f"{slab_name}_slab"
     run_dir.mkdir(parents=True, exist_ok=True)
-    (run_dir / "tmp").mkdir(exist_ok=True)
+
+    tmp_dir = run_dir / "tmp"
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+    for save_dir in run_dir.glob("*.save"):
+        if save_dir.is_dir():
+            shutil.rmtree(save_dir)
+    tmp_dir.mkdir(exist_ok=True)
 
     pref = f"{slab_name}_slab"
     write_scf_input(run_dir / f"{pref}_scf.in", atoms, slab_name, pseudo_dir, kwargs["ecutwfc"], kwargs["ecutrho"], kwargs["degauss"], kwargs["k_scf"])
     write_nscf_input(run_dir / f"{pref}_nscf.in", atoms, slab_name, pseudo_dir, kwargs["ecutwfc"], kwargs["ecutrho"], kwargs["k_nscf"])
     write_projwfc_input(run_dir / f"{pref}_projwfc.in", slab_name, kwargs["filpdos"], kwargs["deltae"], kwargs["emin"], kwargs["emax"])
-    write_pp_input(run_dir / f"{pref}_pp.in", slab_name, f"{pref}_rho", f"{pref}_charge.cube")
+    write_pp_input(run_dir / f"{pref}_pp_plot0.in", slab_name, f"{pref}_rho_plot0", f"{pref}_charge_plot0.cube", plot_num=0)
+    write_pp_input(run_dir / f"{pref}_pp.in", slab_name, f"{pref}_rho", f"{pref}_charge.cube", plot_num=21)
 
     print(f"Generated {slab_name} slab (+U) inputs in {run_dir}")
     if kwargs["run"]:
@@ -223,9 +234,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate/run VN/TiN slab (+U) PDOS workflow from XYZ")
     parser.add_argument("--structure", choices=SLABS, default="VN")
     # UPDATED: New default path for your XYZ files
-    parser.add_argument("--input-root", type=Path, default=Path("/lustre10/scratch/anizami/QE_2/u/combi/final_xyz"))
-    parser.add_argument("--run-root", type=Path, default=Path("/lustre10/scratch/anizami/QE_2/u/PDOS"))
-    parser.add_argument("--pseudo-dir", default="/lustre10/scratch/anizami/QE_2/PAW_pslib")
+    parser.add_argument("--input-root", type=Path, default=Path("/scratch/anizami/QE_2/u/combi/final_xyz"))
+    parser.add_argument("--run-root", type=Path, default=Path("/scratch/anizami/QE_2/u/PDOS"))
+    parser.add_argument("--pseudo-dir", default="/scratch/anizami/QE_2/PAW_pslib")
     parser.add_argument("--ecutwfc", type=float, default=60.0)
     parser.add_argument("--ecutrho", type=float, default=480.0)
     parser.add_argument("--degauss", type=float, default=0.015)

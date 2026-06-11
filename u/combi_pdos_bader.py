@@ -3,11 +3,7 @@
 Generate and optionally run QE SCF/NSCF/PDOS/Bader workflow for combined slab+adsorbate
 structures with DFT+U enabled (VN only).
 
-Uses final structures from:
-  /lustre10/scratch/anizami/QE_2/u/combi/final_xyz
-
-Writes run folders under:
-  /lustre10/scratch/anizami/QE_2/u/PDOS
+Modified for Nibi/Non-Lustre: Uses local ./tmp for I/O.
 """
 
 from __future__ import annotations
@@ -19,6 +15,8 @@ from collections import defaultdict
 from pathlib import Path
 
 from ase.io import read
+
+TMP_DIR = "./tmp"
 
 PSEUDOS = {
     "Ti": "Ti.pbe-spn-kjpaw_psl.1.0.0.UPF",
@@ -35,17 +33,15 @@ PSEUDOS = {
 TARGET_SLAB = "VN"
 FULL_PDOS_ADS = {"Li2S4", "Li2S8", "S8"}
 FIXED_NK = 2
-SCF_CONV_THR = 1.0e-7
-NSCF_CONV_THR = 1.0e-7
+SCF_CONV_THR = 1.0e-6
+NSCF_CONV_THR = 1.0e-6
 HUBBARD_U_V_3D = 2.50
-
 
 def parse_kgrid(text: str) -> list[int]:
     vals = [int(x) for x in text.split()]
     if len(vals) != 6:
         raise ValueError("K grid must contain 6 integers: kx ky kz sx sy sz")
     return vals
-
 
 def ordered_species(tag: str, atoms) -> list[str]:
     slab = tag.split("_", 1)[0]
@@ -63,26 +59,13 @@ def ordered_species(tag: str, atoms) -> list[str]:
 
     return species
 
-
-def format_conv_thr(value: float) -> str:
-    return f"{value:.1e}".replace("e", "d")
-
-
 def ensure_directory_exists(path: Path, label: str) -> None:
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
         print(f"Created missing {label}: {path}")
 
-
 def write_scf_input(
-    file_path: Path,
-    atoms,
-    tag: str,
-    pseudo_dir: str,
-    ecutwfc: float,
-    ecutrho: float,
-    degauss: float,
-    k_scf: list[int],
+    file_path: Path, atoms, tag: str, pseudo_dir: str, ecutwfc: float, ecutrho: float, degauss: float, k_scf: list[int],
 ) -> None:
     nat = len(atoms)
     species = ordered_species(tag, atoms)
@@ -92,16 +75,17 @@ def write_scf_input(
     if metal != "V":
         raise ValueError(f"This script is VN-only; got metal={metal}")
 
-    metal_index = species.index("V") + 1
-
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("&CONTROL\n")
         f.write("  calculation = 'scf'\n")
         f.write(f"  prefix = '{tag}'\n")
         f.write(f"  pseudo_dir = '{pseudo_dir}'\n")
-        f.write("  outdir = './tmp/'\n")
+        f.write("  restart_mode = 'restart'\n") 
+        f.write("  max_seconds = 148000 \n") 
+        f.write(f"  outdir = '{TMP_DIR}'\n")
         f.write("  disk_io = 'medium'\n")
-        f.write("  verbosity = 'high'\n")
+        f.write("  verbosity = 'low'\n")
+        f.write("  wf_collect = .true.\n")
         f.write("/\n")
 
         f.write("&SYSTEM\n")
@@ -109,16 +93,16 @@ def write_scf_input(
         f.write(f"  ecutwfc = {ecutwfc:.1f}, ecutrho = {ecutrho:.1f}\n")
         f.write(f"  occupations = 'smearing', smearing = 'cold', degauss = {degauss:.5f}\n")
         f.write("  nspin = 2\n")
-        f.write(f"  starting_magnetization({metal_index}) = 1.0\n")
+        f.write("  starting_magnetization(1) = 1.5\n")
+        f.write("  starting_magnetization(2) = -0.15\n")
         f.write("/\n")
 
         f.write("&ELECTRONS\n")
         f.write(f"  conv_thr = {SCF_CONV_THR}\n")
-        f.write("  mixing_beta = 0.2\n")
-        f.write(f" mixing_mode = 'local-TF'\n") # Essential for slab-vacuum interfaces
-        f.write(f" mixing_fixed_ns = 10\n")
+        f.write("  mixing_beta = 0.20\n")
+        f.write(f"  mixing_mode = 'local-TF'\n")
         f.write("  electron_maxstep = 250\n")
-        f.write("  diago_david_ndim = 4\n")
+        f.write("  diago_david_ndim = 8\n")
         f.write("/\n")
 
         f.write("\nCELL_PARAMETERS (angstrom)\n")
@@ -141,15 +125,8 @@ def write_scf_input(
         f.write("\nHUBBARD {atomic}\n")
         f.write(f"U V-3d {HUBBARD_U_V_3D}\n")
 
-
 def write_nscf_input(
-    file_path: Path,
-    atoms,
-    tag: str,
-    pseudo_dir: str,
-    ecutwfc: float,
-    ecutrho: float,
-    k_nscf: list[int],
+    file_path: Path, atoms, tag: str, pseudo_dir: str, ecutwfc: float, ecutrho: float, k_nscf: list[int],
 ) -> None:
     nat = len(atoms)
     species = ordered_species(tag, atoms)
@@ -159,28 +136,29 @@ def write_nscf_input(
     if metal != "V":
         raise ValueError(f"This script is VN-only; got metal={metal}")
 
-    metal_index = species.index("V") + 1
-
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("&CONTROL\n")
         f.write("  calculation = 'nscf'\n")
         f.write(f"  prefix = '{tag}'\n")
         f.write(f"  pseudo_dir = '{pseudo_dir}'\n")
-        f.write("  outdir = './tmp/'\n")
-        f.write("  disk_io = 'low'\n")
-        f.write("  verbosity = 'high'\n")
+        f.write(f"  outdir = '{TMP_DIR}'\n")
+        f.write("  disk_io = 'medium'\n")
+        f.write("  verbosity = 'low'\n")
+        f.write("  wf_collect = .true.\n")
         f.write("/\n")
 
         f.write("&SYSTEM\n")
         f.write(f"  ibrav = 0, nat = {nat}, ntyp = {ntyp}\n")
         f.write(f"  ecutwfc = {ecutwfc:.1f}, ecutrho = {ecutrho:.1f}\n")
-        f.write("  occupations = 'tetrahedra_opt'\n")
+        f.write("  occupations = 'smearing'\n")
+        f.write("  smearing = 'cold', degauss = 0.02\n") 
         f.write("  nspin = 2\n")
-        f.write(f"  starting_magnetization({metal_index}) = 1.0\n")
+        f.write("  starting_magnetization(1) = 1.5\n")
+        f.write("  starting_magnetization(2) = -0.15\n")
         f.write("/\n")
 
         f.write("&ELECTRONS\n")
-        f.write(f"  conv_thr = {format_conv_thr(NSCF_CONV_THR)}\n")
+        f.write("  conv_thr = 1.0d-6\n")
         f.write("  diago_david_ndim = 6\n")
         f.write("  diago_thr_init = 1.0d-4\n")
         f.write("  electron_maxstep = 300\n")
@@ -206,12 +184,11 @@ def write_nscf_input(
         f.write("\nHUBBARD {atomic}\n")
         f.write(f"U V-3d {HUBBARD_U_V_3D}\n")
 
-
 def write_projwfc_input(file_path: Path, tag: str, filpdos: str, delta_e: float, e_min: float, e_max: float) -> None:
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("&PROJWFC\n")
         f.write(f"  prefix = '{tag}'\n")
-        f.write("  outdir = './tmp/'\n")
+        f.write(f"  outdir = '{TMP_DIR}'\n")
         f.write("  ngauss = -1\n")
         f.write(f"  DeltaE = {delta_e:.4f}\n")
         f.write(f"  Emin = {e_min:.2f}\n")
@@ -219,12 +196,11 @@ def write_projwfc_input(file_path: Path, tag: str, filpdos: str, delta_e: float,
         f.write(f"  filpdos = '{filpdos}'\n")
         f.write("/\n")
 
-
 def write_pp_input(file_path: Path, tag: str, filplot: str, fileout: str) -> None:
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("&INPUTPP\n")
         f.write(f"  prefix = '{tag}'\n")
-        f.write("  outdir = './tmp/'\n")
+        f.write(f"  outdir = '{TMP_DIR}'\n")
         f.write("  plot_num = 21\n")
         f.write(f"  filplot = '{filplot}'\n")
         f.write("/\n")
@@ -233,7 +209,6 @@ def write_pp_input(file_path: Path, tag: str, filplot: str, fileout: str) -> Non
         f.write("  output_format = 6\n")
         f.write(f"  fileout = '{fileout}'\n")
         f.write("/\n")
-
 
 def run_chain(run_dir: Path, tag: str, np: int, step: str, do_pdos: bool) -> None:
     steps = []
@@ -274,16 +249,19 @@ def run_chain(run_dir: Path, tag: str, np: int, step: str, do_pdos: bool) -> Non
         print(f"  [{label}] {cmd}")
         subprocess.run(cmd, shell=True, cwd=str(run_dir), check=True)
 
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate/run VN (+U) PAW PDOS workflow")
+    
     parser.add_argument("--ads", nargs="+", default=["Li2S4", "S8", "Li2S8"])
-    parser.add_argument("--xyz-dir", type=Path, default=Path("/lustre10/scratch/anizami/QE_2/u/combi/final_xyz"))
-    parser.add_argument("--run-root", type=Path, default=Path("/lustre10/scratch/anizami/QE_2/u/PDOS"))
-    parser.add_argument("--pseudo-dir", default="/lustre10/scratch/anizami/QE_2/PAW_pslib")
+    
+    script_path = Path(__file__).resolve().parent
+    parser.add_argument("--xyz-dir", type=Path, default=script_path / "combi" / "final_xyz")
+    parser.add_argument("--run-root", type=Path, default=script_path / "PDOS")
+    parser.add_argument("--pseudo-dir", default=str(script_path.parent / "PAW_pslib"))
+    
     parser.add_argument("--ecutwfc", type=float, default=60.0)
     parser.add_argument("--ecutrho", type=float, default=480.0)
-    parser.add_argument("--degauss", type=float, default=0.015)
+    parser.add_argument("--degauss", type=float, default=0.02)
     parser.add_argument("--k-scf", default="4 4 1 0 0 0")
     parser.add_argument("--k-nscf", default="8 8 1 0 0 0")
     parser.add_argument("--filpdos", default="combi_pdos")
@@ -385,7 +363,6 @@ def main() -> None:
         print(f"Generated inputs for {tag} (VN-only, +U, mode={args.mode}, step={args.step}, do_pdos={do_pdos})")
         if args.run:
             run_chain(run_dir, tag, args.np, args.step, do_pdos)
-
 
 if __name__ == "__main__":
     main()

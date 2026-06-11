@@ -6,7 +6,7 @@ from pathlib import Path
 ACCOUNT = "def-peslherb"
 TASKS_PER_NODE = 40
 MEM = "200G"
-TIME = "12:00:00"
+TIME = "14:00:00"
 
 LOG_FILE = "completed_slab_pdos_jobs.txt"
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -29,7 +29,7 @@ def submit_slab_job():
         f"#SBATCH --mem={MEM}\n",
         f"#SBATCH --time={TIME}\n",
         "\n",
-        "set -euo pipefail\n",
+        "set -eo pipefail\n",
         "module load quantumespresso/7.5 || true\n",
         "source ~/ase/bin/activate\n",
         "export OMP_NUM_THREADS=1\n",
