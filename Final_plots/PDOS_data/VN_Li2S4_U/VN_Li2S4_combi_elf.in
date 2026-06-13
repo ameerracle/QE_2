@@ -1,0 +1,11 @@
+&INPUTPP
+  prefix = 'VN_Li2S4_combi'
+  outdir = './tmp/'
+  plot_num = 8
+  filplot = 'VN_Li2S4_combi_elf'
+/
+&PLOT
+  iflag = 3
+  output_format = 6
+  fileout = 'VN_Li2S4_combi_ELF.cube'
+/

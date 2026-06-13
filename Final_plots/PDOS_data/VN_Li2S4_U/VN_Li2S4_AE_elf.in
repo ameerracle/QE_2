@@ -1,0 +1,12 @@
+&INPUTPP
+  prefix = 'VN_Li2S4'
+  outdir = './tmp/'
+  plot_num = 8
+  filplot = 'VN_Li2S4_AE_elf'
+  use_all_elec = .true.
+/
+&PLOT
+  iflag = 3
+  output_format = 6
+  fileout = 'VN_Li2S4_AE_ELF.cube'
+/

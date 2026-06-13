@@ -1,0 +1,64 @@
+
+     Program POST-PROC v.7.5 starts on 21May2026 at 16:58:20 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on      32 processor cores
+     Number of MPI processes:                32
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =      32
+     218845 MiB available memory on the printing compute node when the environment starts
+
+
+     Reading xml data from directory:
+
+     ./tmp/VN_Li2S4.save/
+     file V.pbe-spnl-kjpaw_psl.1.0.0.UPF: wavefunction(s)  3P 3D renormalized
+     file N.pbe-n-kjpaw_psl.1.0.0.UPF: wavefunction(s)  2S renormalized
+     file S.pbe-n-kjpaw_psl.1.0.0.UPF: wavefunction(s)  3S 3P renormalized
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         669     334     87               154383    54588    7327
+     Max         670     335     88               154393    54601    7340
+     Sum       21409   10717   2801              4940467  1747145  234613
+
+     Using Slab Decomposition
+
+
+     Check: negative core charge=   -0.000002
+
+     negative rho (up, down):  5.866E-03 1.110E-02
+
+     Calling punch_plot, plot_num =   0
+     Writing data to file  VN_Li2S4_rho_plot0
+     Reading data from file  VN_Li2S4_rho_plot0
+
+     Writing data to be plotted to file VN_Li2S4_charge_plot0.cube
+     Plot Type: 3D                     Output format: Gaussian cube
+
+     POST-PROC    :     19.62s CPU     23.48s WALL
+
+
+   This run was terminated on:  16:58:44  21May2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=

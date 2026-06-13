@@ -1,0 +1,13 @@
+/var/spool/slurmd/job14430317/slurm_script: line 8: Set: command not found
+/var/spool/slurmd/job14430317/slurm_script: line 12: Pass: command not found
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Note: The following floating-point exceptions are signalling: IEEE_DENORMAL
+Generating input file: /scratch/anizami/QE_2/u/lobster/VN_Li2S4_combi/VN_Li2S4_projwfc.in
+  [PROJWFC] Running: srun projwfc.x < VN_Li2S4_projwfc.in > VN_Li2S4_projwfc.out
+PDOS generation completed successfully.

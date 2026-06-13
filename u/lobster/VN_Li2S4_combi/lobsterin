@@ -1,0 +1,58 @@
+basisSet pbeVaspFit2015
+useRecommendedBasisFunctions
+COHPStartEnergy -12
+COHPEndEnergy 8
+COHPsteps 1000
+gaussianSmearingWidth 0.27
+skipMulliken
+skipLoewdin
+skipCOOP
+skipDOS
+skipCar
+BWOverlapLimit 0.1
+
+# Target Indices for Surface/Adsorbate Bonding
+# Threshold used: z > 16.0 A
+# Found 42 target atoms
+cohpGenerator from 1.0 to 3.5 around 10
+cohpGenerator from 1.0 to 3.5 around 11
+cohpGenerator from 1.0 to 3.5 around 15
+cohpGenerator from 1.0 to 3.5 around 16
+cohpGenerator from 1.0 to 3.5 around 26
+cohpGenerator from 1.0 to 3.5 around 27
+cohpGenerator from 1.0 to 3.5 around 31
+cohpGenerator from 1.0 to 3.5 around 32
+cohpGenerator from 1.0 to 3.5 around 42
+cohpGenerator from 1.0 to 3.5 around 43
+cohpGenerator from 1.0 to 3.5 around 47
+cohpGenerator from 1.0 to 3.5 around 48
+cohpGenerator from 1.0 to 3.5 around 58
+cohpGenerator from 1.0 to 3.5 around 59
+cohpGenerator from 1.0 to 3.5 around 63
+cohpGenerator from 1.0 to 3.5 around 64
+cohpGenerator from 1.0 to 3.5 around 74
+cohpGenerator from 1.0 to 3.5 around 75
+cohpGenerator from 1.0 to 3.5 around 79
+cohpGenerator from 1.0 to 3.5 around 80
+cohpGenerator from 1.0 to 3.5 around 90
+cohpGenerator from 1.0 to 3.5 around 91
+cohpGenerator from 1.0 to 3.5 around 95
+cohpGenerator from 1.0 to 3.5 around 96
+cohpGenerator from 1.0 to 3.5 around 106
+cohpGenerator from 1.0 to 3.5 around 107
+cohpGenerator from 1.0 to 3.5 around 111
+cohpGenerator from 1.0 to 3.5 around 112
+cohpGenerator from 1.0 to 3.5 around 122
+cohpGenerator from 1.0 to 3.5 around 123
+cohpGenerator from 1.0 to 3.5 around 127
+cohpGenerator from 1.0 to 3.5 around 128
+cohpGenerator from 1.0 to 3.5 around 138
+cohpGenerator from 1.0 to 3.5 around 139
+cohpGenerator from 1.0 to 3.5 around 143
+cohpGenerator from 1.0 to 3.5 around 144
+cohpGenerator from 1.0 to 3.5 around 145
+cohpGenerator from 1.0 to 3.5 around 146
+cohpGenerator from 1.0 to 3.5 around 147
+cohpGenerator from 1.0 to 3.5 around 148
+cohpGenerator from 1.0 to 3.5 around 149
+cohpGenerator from 1.0 to 3.5 around 150

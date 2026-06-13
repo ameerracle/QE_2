@@ -1,0 +1,11 @@
+&INPUTPP
+  prefix = 'VN_Li2S4'
+  outdir = './tmp'
+  plot_num = 0
+  filplot = 'VN_Li2S4_rho_plot0'
+/
+&PLOT
+  iflag = 3
+  output_format = 6
+  fileout = 'VN_Li2S4_charge_plot0.cube'
+/

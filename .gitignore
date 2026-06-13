@@ -26,3 +26,4 @@ wfc*.hdf5
 *.md
 *.cube
 VASP/*
+.claude/settings.json
