@@ -200,7 +200,7 @@ METAL_ORDER = ['Sc', 'Ti', 'V', 'V_U', 'Nb', 'Zr']
 ADSORBATES  = ['Li2S4', 'Li2S8', 'S8']
 ADS_LABELS  = {'Li2S4': r'Li$_2$S$_4$', 'Li2S8': r'Li$_2$S$_8$', 'S8': r'S$_8$'}
 SUBPLOT_OUT = {
-    'Li2S4': BASE / 'Final_plots/Figure_2_PDOS_subplot.png',
+    'Li2S4': BASE / 'Final_plots/Figure_3_PDOS_subplot.png',
     'Li2S8': BASE / 'Final_plots/Figure_S2_PDOS_subplot.png',
     'S8':    BASE / 'Final_plots/Figure_S3_PDOS_subplot.png',
 }

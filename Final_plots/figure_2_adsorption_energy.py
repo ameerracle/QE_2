@@ -107,7 +107,7 @@ for pos, metal in enumerate(metal_order):
 bold_axis_text(ax)
 ax.legend(title='Adsorbate', ncol=3, frameon=False, loc='upper left', prop={'weight': 'bold'})
 plt.tight_layout()
-plt.savefig(base_dir / 'Final_plots' / 'Figure_1a.png', dpi=600, bbox_inches='tight')
+plt.savefig(base_dir / 'Final_plots' / 'Figure_2a.png', dpi=600, bbox_inches='tight')
 plt.close(fig)
 
 # --- Plot 2: one subplot per metal, with the six adsorbates on the x-axis ---
@@ -128,7 +128,7 @@ axes[3].set_ylabel('Adsorption energy (eV)')
 for a in axes:
     bold_axis_text(a)
 plt.tight_layout()
-plt.savefig(base_dir / 'Final_plots' / 'Figure_1b.png', dpi=600, bbox_inches='tight')
+plt.savefig(base_dir / 'Final_plots' / 'Figure_2b.png', dpi=600, bbox_inches='tight')
 plt.close(fig)
 
 # --- Combined Figure 1: 2 columns, 1 row ---
@@ -136,8 +136,8 @@ import matplotlib.image as mpimg
 
 fig, axes = plt.subplots(2, 1, figsize=(14, 12))
 panel_labels = ['(a)', '(b)']
-panel_files = [base_dir / 'Final_plots' / 'Figure_1a.png',
-               base_dir / 'Final_plots' / 'Figure_1b.png']
+panel_files = [base_dir / 'Final_plots' / 'Figure_2a.png',
+               base_dir / 'Final_plots' / 'Figure_2b.png']
 
 for ax, label, img_path in zip(axes, panel_labels, panel_files):
     img = mpimg.imread(img_path)
@@ -148,5 +148,5 @@ for ax, label, img_path in zip(axes, panel_labels, panel_files):
             fontsize=16, fontweight='bold', ha='left', va='top')
 
 fig.tight_layout(pad=0.2)
-plt.savefig(base_dir / 'Final_plots' / 'Figure_1_combined.png', dpi=600, bbox_inches='tight')
+plt.savefig(base_dir / 'Final_plots' / 'Figure_2_combined.png', dpi=600, bbox_inches='tight')
 plt.close(fig)

@@ -19,7 +19,7 @@ lobster_dir = base_dir / 'Final_plots/lobster_out'
 metal_order = ['ScN', 'VN', 'VN_U', 'TiN', 'NbN', 'ZrN']
 metal_labels = {m: m.replace('VN_U', 'VN (+U)') for m in metal_order}
 ads_order = ['Li2S4', 'Li2S8', 'S8']
-bond_cats = ['M\u2013Li', 'M\u2013S']
+bond_cats = ['M\u2013Li', 'M\u2013S', 'N\u2013Li', 'N\u2013S']
 
 ADSORBATE_SPECIES = {'S', 'Li'}
 INTRA_ADSORBATE = {'S-S', 'Li-S', 'S-Li', 'Li-Li'}
@@ -32,6 +32,10 @@ def map_bond_cat(row):
         return 'M\u2013S'
     if 'Li' in pair and pair.intersection(METALS):
         return 'M\u2013Li'
+    if 'N' in pair and 'Li' in pair:
+        return 'N\u2013Li'
+    if 'N' in pair and 'S' in pair:
+        return 'N\u2013S'
     return 'Other'
 
 icohp_data = []
@@ -64,6 +68,10 @@ icohp_df = icohp_df[~icohp_df['bond_type'].isin(INTRA_ADSORBATE)]
 icohp_df['bond_cat'] = icohp_df.apply(map_bond_cat, axis=1)
 icohp_df = icohp_df[icohp_df['bond_cat'] != 'Other']
 
+# Drop weak/far interactions: noise-floor ICOHP and non-bonding distances
+icohp_df = icohp_df[icohp_df['ICOHP'].abs() >= 0.05]
+icohp_df = icohp_df[icohp_df['distance'] <= 3.0]
+
 summary = icohp_df.groupby(['metal', 'adsorbate', 'bond_cat']).agg(
     ICOHP_mean=('ICOHP', 'mean'),
 ).reset_index()
@@ -73,7 +81,7 @@ ads_colors = dict(zip(ads_order, sns.color_palette('pastel', len(ads_order))))
 ads_colors['S8'] = '#FFD65C'
 
 mosaic = [metal_labels[m] for m in metal_order]
-fig, axd = subplot_mosaic([mosaic], figsize=(16, 6), sharey=True)
+fig, axd = subplot_mosaic([mosaic], figsize=(22, 6), sharey=True)
 
 for mi, metal in enumerate(metal_order):
     ax = axd[metal_labels[metal]]
