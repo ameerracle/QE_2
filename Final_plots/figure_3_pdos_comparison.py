@@ -10,6 +10,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from plot_db import write_table
 
 mpl.rcParams.update({'font.size': 11, 'axes.linewidth': 1.2})
 
@@ -190,6 +193,7 @@ def plot_panel(metal, adsorbate, ax):
                     transform=ax.get_xaxis_transform(), ha='right', va='top', fontsize=9)
 
     ax.set_xlim(EMIN, EMAX)
+    ax.set_ylim(-200, 200) if spin else ax.set_ylim(0, 200)
     ax.set_xlabel(r'$E - E_F$ (eV)', fontsize=10, fontweight='bold')
     ax.set_ylabel('PDOS (states/eV)', fontsize=10, fontweight='bold')
     ax.legend(fontsize=7, loc='upper left', frameon=False)
@@ -225,10 +229,54 @@ for ads in ADSORBATES:
         plt.close(fig_s)
         print(f'  saved {png.name}')
 
-    fig.suptitle(f'PDOS — {ADS_LABELS[ads]}', fontsize=13, y=1.002)
     fig.tight_layout(pad=1.5)
     fig.savefig(SUBPLOT_OUT[ads], dpi=300, bbox_inches='tight')
     plt.close(fig)
     print(f'Saved subplot → {SUBPLOT_OUT[ads].name}')
+
+    # Extra 2-row × 3-col layout for Li2S4 (Figure 3 main)
+    if ads == 'Li2S4':
+        fig2, axes2 = plt.subplots(2, 3, figsize=(18, 10))
+        axes2 = axes2.ravel()
+        for i, metal in enumerate(METAL_ORDER):
+            plot_panel(metal, ads, axes2[i])
+            axes2[i].text(-0.18, 1.03, panel_labels[i], transform=axes2[i].transAxes,
+                          fontsize=14, fontweight='bold', ha='left', va='top')
+        fig2.tight_layout(pad=1.5)
+        out2 = BASE / 'Final_plots/Figure_3_2row_PDOS_subplot.png'
+        fig2.savefig(out2, dpi=300, bbox_inches='tight')
+        plt.close(fig2)
+        print(f'Saved 2-row layout → {out2.name}')
+
+# ── archive plotted PDOS curves to SQLite ────────────────────────────────────
+# Long-form: one row per (metal, adsorbate, element, orbital, spin_channel, E point)
+_db_rows = []
+_curves = [('metal_d', 'd'), ('N', 'p'), ('S', 'p'), ('Li', 's')]
+for metal in METAL_ORDER:
+    spin = (metal == 'V_U')
+    melem = METAL_ELEM[metal]
+    for ads in ADSORBATES:
+        ef = FERMI[metal][ads]
+        combi = load_pdos(COMBI_DIRS[metal][ads], spin=spin, fermi=ef)
+        for label, orb in _curves:
+            elem = melem if label == 'metal_d' else label
+            if spin:
+                for comp in ('up', 'dw'):
+                    E, dos = _get(combi, elem, orb, spin=True, component=comp)
+                    if E is None:
+                        continue
+                    for e_val, d_val in zip(E, dos):
+                        _db_rows.append({'metal': METAL_LABEL[metal], 'adsorbate': ads,
+                                         'element': elem, 'orbital': orb, 'spin': comp,
+                                         'E_minus_Ef': float(e_val), 'pdos': float(d_val)})
+            else:
+                E, dos = _get(combi, elem, orb)
+                if E is None:
+                    continue
+                for e_val, d_val in zip(E, dos):
+                    _db_rows.append({'metal': METAL_LABEL[metal], 'adsorbate': ads,
+                                     'element': elem, 'orbital': orb, 'spin': 'none',
+                                     'E_minus_Ef': float(e_val), 'pdos': float(d_val)})
+write_table(pd.DataFrame(_db_rows), 'figure_3_pdos')
 
 print('Done.')

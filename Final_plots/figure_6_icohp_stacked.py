@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplot_mosaic
 from matplotlib.patches import ConnectionPatch, Rectangle
 import seaborn as sns
+from plot_db import write_table
 
 # > Figure: ICOHP Grouped Bar Plot ? Mean |ICOHP| by Metal / Bond Type / Adsorbate
 # --------------------------------------------------------------------------
@@ -76,6 +77,11 @@ summary = icohp_df.groupby(['metal', 'adsorbate', 'bond_cat']).agg(
     ICOHP_mean=('ICOHP', 'mean'),
 ).reset_index()
 summary['ICOHP_abs'] = summary['ICOHP_mean'].abs()
+
+# Archive plotted data: per-bond ICOHP and the mean summary that is plotted
+write_table(icohp_df[['metal', 'adsorbate', 'atom1', 'atom2', 'bond_type',
+                      'bond_cat', 'distance', 'ICOHP']], 'figure_6_icohp_bonds')
+write_table(summary, 'figure_6_icohp_summary')
 
 ads_colors = dict(zip(ads_order, sns.color_palette('pastel', len(ads_order))))
 ads_colors['S8'] = '#FFD65C'

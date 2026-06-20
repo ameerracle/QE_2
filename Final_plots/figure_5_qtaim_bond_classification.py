@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.lines import Line2D
+from plot_db import write_table
 
 # > Figure: QTAIM Bond Classification Diagram (|V|/G vs ???) ? Interface Bonds Only
 # --------------------------------------------------------------------------
@@ -21,7 +22,7 @@ metal_plot_labels = {m: m.replace('VN_U', 'VN (+U)') for m in metal_order_bcp}
 ads_order_bcp = ['Li2S4', 'Li2S8', 'S8']
 
 ADSORBATE_SPECIES = {'S', 'Li', 'O'}
-INTRA_ADSORBATE = {'S-S', 'Li-S', 'S-Li', 'N-S', 'S-N'}
+INTRA_ADSORBATE = {'S-S', 'Li-S', 'S-Li'}
 
 bcp_data = []
 
@@ -152,8 +153,13 @@ def classify_bond_group(row):
 bcp_df['bond_group'] = bcp_df.apply(classify_bond_group, axis=1)
 bcp_df_bg = bcp_df[bcp_df['bond_group'] != 'Other']
 
-bond_group_order = ['M–S', 'N–Li']
-bond_group_markers = {'M–S': 'o', 'N–Li': 'D'}
+bond_group_order = ['M–S', 'N–Li', 'N–S']
+bond_group_markers = {'M–S': 'o', 'N–Li': 'D', 'N–S': '^'}
+
+# Archive plotted data: BCP descriptors for every plotted interface bond
+_db_cols = ['metal', 'adsorbate', 'atom1', 'atom2', 'bond_type',
+            'rho', 'laplacian', 'abs_V_over_G', 'bond_group']
+write_table(bcp_df[[c for c in _db_cols if c in bcp_df.columns]], 'figure_5_qtaim_bcp')
 
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.text(-0.04, 1.03, '(b)', transform=ax.transAxes,

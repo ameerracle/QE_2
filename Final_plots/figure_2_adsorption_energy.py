@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from plot_db import write_table
 
 plt.rcParams.update({'font.family': 'Liberation Sans', 'mathtext.fontset': 'stix', 'font.weight': 'bold', 'axes.labelweight': 'bold', 'axes.titleweight': 'bold'})
 
@@ -52,6 +53,13 @@ df = df.sort_values(['metal', 'adsorbate']).reset_index(drop=True)
 # Load d-band center values and compute max per metal.
 dband_df = pd.read_csv(dband_csv)
 dband_max = dband_df.groupby('compound')['d_band_center_eV'].max().to_dict()
+
+# Archive plotted data: adsorption energy per metal/adsorbate + d-band center
+_db_df = df.copy()
+_db_df['metal'] = _db_df['metal'].astype(str)
+_db_df['adsorbate'] = _db_df['adsorbate'].astype(str)
+_db_df['d_band_center_eV'] = _db_df['metal'].map(dband_max)
+write_table(_db_df, 'figure_2_adsorption_energy')
 
 def bold_axis_text(ax):
     ax.xaxis.label.set_fontweight('bold')
@@ -110,18 +118,18 @@ plt.tight_layout()
 plt.savefig(base_dir / 'Final_plots' / 'Figure_2a.png', dpi=600, bbox_inches='tight')
 plt.close(fig)
 
-# --- Plot 2: one subplot per metal, with the six adsorbates on the x-axis ---
+# --- Plot 2: one subplot per adsorbate, with the metals on the x-axis ---
 fig, axes = plt.subplots(2, 3, figsize=(16, 8), sharey=True)
 axes = axes.ravel()
 
-for idx, (ax, metal) in enumerate(zip(axes, metal_order)):
-    subset = df[df['metal'] == metal].set_index('adsorbate').reindex(ads_order)
+for idx, (ax, ads) in enumerate(zip(axes, ads_order)):
+    subset = df[df['adsorbate'] == ads].set_index('metal').reindex(metal_order)
     values = subset['E_adsorption_eV'].tolist()
 
-    ax.bar(ads_order, values, color=[adsorbate_colors[a] for a in ads_order])
-    ax.text(0.02, 0.95, metal, transform=ax.transAxes, fontsize=13, fontweight='bold', va='top', ha='left')
-    ax.set_xlabel('Adsorbate', labelpad=8)
-    ax.tick_params(axis='x', rotation=0)
+    ax.bar(metal_order, values, color=adsorbate_colors[ads])
+    ax.text(0.02, 0.95, ads, transform=ax.transAxes, fontsize=13, fontweight='bold', va='top', ha='left')
+    ax.set_xlabel('Metal', labelpad=8)
+    ax.tick_params(axis='x', rotation=45)
 
 axes[0].set_ylabel('Adsorption energy (eV)')
 axes[3].set_ylabel('Adsorption energy (eV)')
