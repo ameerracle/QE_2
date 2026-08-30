@@ -36,5 +36,4 @@ for ax in axes[n_plots:]:
 
 fig.tight_layout(pad=0.8)
 fig.savefig(out_file, dpi=600, bbox_inches='tight')
-plt.show()
 plt.close(fig)

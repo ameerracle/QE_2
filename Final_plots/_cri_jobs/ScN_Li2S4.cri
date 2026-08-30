@@ -1,0 +1,5 @@
+crystal /lustre10/scratch/anizami/QE_2/no_u/PDOS/ScN_Li2S4/ScN_Li2S4_charge.cube
+load /lustre10/scratch/anizami/QE_2/no_u/PDOS/ScN_Li2S4/ScN_Li2S4_charge.cube id rho_tot
+reference rho_tot
+auto seed line x0 0.3294953908 0.3333288412 0.6274692811 x1 0.3392835667 0.3403160890 0.7015564683 npts 15
+cpreport

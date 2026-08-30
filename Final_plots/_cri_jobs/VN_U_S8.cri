@@ -1,0 +1,7 @@
+crystal /scratch/anizami/QE_2/u/PDOS/VN_S8/VN_S8_charge.cube
+load /scratch/anizami/QE_2/u/PDOS/VN_S8/VN_S8_charge.cube id rho_tot
+reference rho_tot
+auto seed line x0 0.0011731854 0.3344847657 0.6231990695 x1 -0.1656074418 0.3831123817 0.7221564987 npts 15
+auto seed line x0 0.3339910352 0.9995189834 0.6214079108 x1 0.3021007938 1.1670862679 0.7207521661 npts 15
+auto seed line x0 0.5008730780 0.6650034678 0.6363215595 x1 0.4697354071 0.6489816624 0.7232363236 npts 15
+cpreport

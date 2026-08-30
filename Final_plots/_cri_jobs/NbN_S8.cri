@@ -1,0 +1,6 @@
+crystal /lustre10/scratch/anizami/QE_2/no_u/PDOS/NbN_S8/NbN_S8_charge.cube
+load /lustre10/scratch/anizami/QE_2/no_u/PDOS/NbN_S8/NbN_S8_charge.cube id rho_tot
+reference rho_tot
+auto seed line x0 0.1636189951 0.4984108395 0.6283363347 x1 0.2192744756 0.4237493715 0.7509745489 npts 15
+auto seed line x0 0.3340354187 0.9960766595 0.6294709433 x1 0.3123904560 1.1830553266 0.7182084900 npts 15
+cpreport

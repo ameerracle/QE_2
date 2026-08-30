@@ -17,7 +17,7 @@ metal_order = ['ScN', 'TiN', 'VN', 'VN_U', 'NbN', 'ZrN']
 metal_labels = {m: m.replace('VN_U', 'VN (+U)').replace('N', '') if m != 'VN_U' else 'VN (+U)'
                 for m in metal_order}
 # Clean metal axis labels: Sc, Ti, V, VN (+U), Nb, Zr
-metal_labels = {'ScN': 'Sc', 'TiN': 'Ti', 'VN': 'V', 'VN_U': 'VN (+U)', 'NbN': 'Nb', 'ZrN': 'Zr'}
+metal_labels = {'ScN': 'Sc', 'TiN': 'Ti', 'VN': 'VN', 'VN_U': 'VN (+U)', 'NbN': 'Nb', 'ZrN': 'Zr'}
 ads_order = ['Li2S4', 'Li2S8', 'S8']
 
 # Species (stacking order) and colors

@@ -51,7 +51,6 @@ bcp_df = bcp_df[bcp_df['atom1'].isin(ADSORBATE_SPECIES) | bcp_df['atom2'].isin(A
 bcp_df = bcp_df[~bcp_df['bond_type'].isin(INTRA_ADSORBATE)]
 
 # Filter out physically unreasonable outliers that ruin plot scaling
-bcp_df = bcp_df[bcp_df['laplacian'] >= 0]
 bcp_df = bcp_df[bcp_df['abs_V_over_G'] < 120]
 
 # Drop weak/noise-floor critical points: require meaningful density at the BCP
@@ -106,11 +105,22 @@ ax.axhline(1, color='grey', linewidth=1.0, linestyle='--', zorder=0)
 ax.axhline(2, color='grey', linewidth=1.0, linestyle='--', zorder=0)
 
 # Zone annotations (filled white background, no outline, on top of dots)
-ax.text(0.02, 0.98, 'Covalent\n(shared-shell)', transform=ax.transAxes,
-        fontsize=11, fontweight='bold', ha='left', va='top', color='darkgreen',
-        bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='none', alpha=0.85), zorder=5)
-ax.text(0.98, 0.98, 'Ionic /\nClosed-shell', transform=ax.transAxes,
-        fontsize=11, fontweight='bold', ha='right', va='top', color='darkred',
+# Laplacian-sign labels (x-axis concept) sit just above the x-axis itself,
+# straddling the x=0 line (data coords for x, axes-fraction for y) - the
+# nearest data to x=0 is at |V|/G >= 1.21, well above this band, so they
+# never collide with points and stay inside the plot frame.
+_xaxis_t = ax.get_xaxis_transform()
+ax.text(-0.005, 0.04, 'Covalent\n(shared-shell)', transform=_xaxis_t,
+        fontsize=11, fontweight='bold', ha='right', va='bottom', color='darkgreen',
+        clip_on=False, zorder=5)
+ax.text(0.005, 0.04, 'Ionic /\nClosed-shell', transform=_xaxis_t,
+        fontsize=11, fontweight='bold', ha='left', va='bottom', color='darkred',
+        clip_on=False, zorder=5)
+# y-axis (|V|/G) zone labels - three bands matching the Espinosa-Molins-
+# Lecomte thresholds at 1 and 2. Top band placed top-left since the only
+# points above |V|/G=2 sit on the right side of the plot (high Laplacian).
+ax.text(0.02, 0.98, 'Strongly covalent\n(shared-shell, |V|/G > 2)', transform=ax.transAxes,
+        fontsize=10, fontweight='bold', ha='left', va='top', color='purple',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='none', alpha=0.85), zorder=5)
 ax.text(0.02, 0.72, 'Intermediate\n(1 < |V|/G < 2)', transform=ax.transAxes,
         fontsize=10, fontweight='bold', ha='left', va='bottom', color='darkgoldenrod',
@@ -187,11 +197,22 @@ ax.axhline(1, color='grey', linewidth=1.0, linestyle='--', zorder=0)
 ax.axhline(2, color='grey', linewidth=1.0, linestyle='--', zorder=0)
 
 # Zone annotations
-ax.text(0.02, 0.98, 'Covalent\n(shared-shell)', transform=ax.transAxes,
-        fontsize=11, fontweight='bold', ha='left', va='top', color='darkgreen',
-        bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='none', alpha=0.85), zorder=5)
-ax.text(0.98, 0.98, 'Ionic /\nClosed-shell', transform=ax.transAxes,
-        fontsize=11, fontweight='bold', ha='right', va='top', color='darkred',
+# Laplacian-sign labels (x-axis concept) sit just above the x-axis itself,
+# straddling the x=0 line (data coords for x, axes-fraction for y) - the
+# nearest data to x=0 is at |V|/G >= 1.21, well above this band, so they
+# never collide with points and stay inside the plot frame.
+_xaxis_t = ax.get_xaxis_transform()
+ax.text(-0.005, 0.04, 'Covalent\n(shared-shell)', transform=_xaxis_t,
+        fontsize=11, fontweight='bold', ha='right', va='bottom', color='darkgreen',
+        clip_on=False, zorder=5)
+ax.text(0.005, 0.04, 'Ionic /\nClosed-shell', transform=_xaxis_t,
+        fontsize=11, fontweight='bold', ha='left', va='bottom', color='darkred',
+        clip_on=False, zorder=5)
+# y-axis (|V|/G) zone labels - three bands matching the Espinosa-Molins-
+# Lecomte thresholds at 1 and 2. Top band placed top-left since the only
+# points above |V|/G=2 sit on the right side of the plot (high Laplacian).
+ax.text(0.02, 0.98, 'Strongly covalent\n(shared-shell, |V|/G > 2)', transform=ax.transAxes,
+        fontsize=10, fontweight='bold', ha='left', va='top', color='purple',
         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='none', alpha=0.85), zorder=5)
 ax.text(0.02, 0.72, 'Intermediate\n(1 < |V|/G < 2)', transform=ax.transAxes,
         fontsize=10, fontweight='bold', ha='left', va='bottom', color='darkgoldenrod',

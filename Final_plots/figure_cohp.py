@@ -207,6 +207,52 @@ plt.subplots_adjust(hspace=0.25, wspace=0.3)
 plt.savefig(base_dir / 'Final_plots' / 'Figure_COHP_by_ads.png', dpi=600, bbox_inches='tight')
 plt.show()
 
+# --- Plot 3: ScN only, separated by adsorbate ------------------------------
+# A dedicated ScN figure keeps the three adsorbate curves readable without
+# competing with the other metal systems.
+fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharey=True)
+
+for idx, ads in enumerate(ads_order_cohp):
+    ax = axes[idx]
+    key = f'ScN_{ads}'
+
+    if key in cohp_data_dict:
+        data = cohp_data_dict[key]
+        ax.plot(
+            -data['pcohp_avg'],
+            data['energy'],
+            linewidth=2.0,
+            color=ads_colors_cohp[ads],
+            label=ads,
+            alpha=0.8,
+        )
+
+    ax.axvline(0, color='grey', linewidth=0.8, linestyle='--')
+    ax.axhline(0, color='black', linewidth=1.0, linestyle='-', alpha=0.3)
+    ax.annotate(ads, xy=(0.03, 0.95), xycoords='axes fraction',
+                fontsize=16, fontweight='bold', ha='left', va='top')
+    ax.tick_params(axis='both', labelsize=11)
+    ax.set_xlabel('-pCOHP (states/eV)', fontsize=12)
+    ax.set_ylim(-12, 8)
+    ax.set_xlim(x_lim_min, x_lim_max)
+    ax.yaxis.set_major_locator(MultipleLocator(4))
+    ax.yaxis.set_minor_locator(MultipleLocator(2))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.tick_params(axis='y', which='major', length=6)
+    ax.tick_params(axis='y', which='minor', length=3)
+
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontweight('bold')
+
+axes[0].set_ylabel('Energy (eV)', fontsize=12)
+fig.suptitle('COHP at ScN–Adsorbate Interfaces', fontsize=16,
+             fontweight='bold')
+fig.tight_layout()
+fig.subplots_adjust(top=0.88, wspace=0.25)
+plt.savefig(base_dir / 'Final_plots' / 'Figure_COHP_ScN.png',
+            dpi=600, bbox_inches='tight')
+plt.show()
+
 print(f"COHP plots saved (using -pCOHP convention, rotated orientation). Data retrieved for {len(cohp_data_dict)} systems.")
 print(f"X-axis range: [{x_lim_min:.4f}, {x_lim_max:.4f}] states/eV")
 print(f"Bonding states appear to the right (positive -pCOHP), antibonding to the left (negative)")

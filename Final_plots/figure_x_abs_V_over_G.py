@@ -47,7 +47,6 @@ vg_df = pd.concat(vg_data, ignore_index=True)
 # Keep only adsorbate-involved BCPs, exclude intra-adsorbate bonds (S-S, Li-S) ? only metal-adsorbate interface
 vg_df = vg_df[vg_df['atom1'].isin(ADSORBATE_SPECIES) | vg_df['atom2'].isin(ADSORBATE_SPECIES)]
 vg_df = vg_df[~vg_df['bond_type'].isin(INTRA_ADSORBATE)]
-vg_df = vg_df[vg_df['laplacian'] >= 0]
 
 # --- Plot 1: |V|/G by metal (3x2 grid) ---
 fig, axes = plt.subplots(2, 3, figsize=(18, 10), sharey=True, sharex=True)

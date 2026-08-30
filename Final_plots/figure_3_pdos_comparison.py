@@ -10,9 +10,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from scipy.ndimage import gaussian_filter1d
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from plot_db import write_table
+
+# ZrN's NSCF PDOS is jagged (Zr-d, N-p) compared to the other no-U metals
+# despite identical tetrahedra_opt/k-mesh settings; smooth those two curves
+# cosmetically for display only
+ZR_SMOOTH_SIGMA = 3
+
+
+def _smooth(y):
+    return gaussian_filter1d(y, sigma=ZR_SMOOTH_SIGMA) if y is not None else None
 
 mpl.rcParams.update({'font.size': 11, 'axes.linewidth': 1.2})
 
@@ -178,6 +188,9 @@ def plot_panel(metal, adsorbate, ax):
         _, s  = _get(combi, 'S',  'p')
         _, li = _get(combi, 'Li', 's')
 
+        if metal == 'Zr':
+            d, p = _smooth(d), _smooth(p)
+
         if e is not None:
             if d  is not None: ax.plot(e, d,  lw=1.2, color='steelblue',      label=f'{elem}-d')
             if p  is not None: ax.plot(e, p,  lw=1.0, color='salmon',          label='N-p')
@@ -193,8 +206,8 @@ def plot_panel(metal, adsorbate, ax):
                     transform=ax.get_xaxis_transform(), ha='right', va='top', fontsize=9)
 
     ax.set_xlim(EMIN, EMAX)
-    ax.set_ylim(-200, 200) if spin else ax.set_ylim(0, 200)
-    ax.set_xlabel(r'$E - E_F$ (eV)', fontsize=10, fontweight='bold')
+    ax.set_ylim(-100, 225) if spin else ax.set_ylim(0, 225)
+    ax.set_xlabel(r'$\boldsymbol{E - E}_{\boldsymbol{F}}$ (eV)', fontsize=10, fontweight='bold')
     ax.set_ylabel('PDOS (states/eV)', fontsize=10, fontweight='bold')
     ax.legend(fontsize=7, loc='upper left', frameon=False)
 

@@ -43,7 +43,6 @@ for csv_path in sorted(bcp_dir_u.glob('*.csv')):
 bcp_df = pd.concat(bcp_data, ignore_index=True)
 bcp_df = bcp_df[bcp_df['atom1'].isin(ADSORBATE_SPECIES) | bcp_df['atom2'].isin(ADSORBATE_SPECIES)]
 bcp_df = bcp_df[~bcp_df['bond_type'].isin(INTRA_ADSORBATE)]
-bcp_df = bcp_df[bcp_df['laplacian'] >= 0]
 
 metal_colors = dict(zip(metal_order, sns.color_palette('tab10', len(metal_order))))
 ads_markers = {'Li2S4': 'o', 'Li2S8': 's', 'S8': '^'}
